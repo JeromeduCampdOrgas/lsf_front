@@ -3,34 +3,44 @@
     <table class="table">
       <thead class="table-dark">
         <tr>
-          <th>Name</th>
-          <th>Position</th>
-          <th>Office</th>
-          <th>Age</th>
-          <th>Start date</th>
-          <th>Salary</th>
+          <th>Id</th>
+          <th>Username</th>
+          <th>email</th>
+          <th>isAdmin</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Tiger Nixon</td>
-          <td>System Architect</td>
-          <td>Edinburgh</td>
-          <td>61</td>
-          <td>2011/04/25</td>
-          <td>$320,800</td>
+        <tr v-for="user in this.users" :key="user.id">
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.isAdmin }}</td>
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-success">Valider</button>
+    <button class="btn btn-success" @click="afficheUsers">Valider</button>
   </div>
 </template>
 
 <script>
+import configAxios from "../config/axios/configAxios";
 export default {
   name: "HelloWorld",
+  data() {
+    return {
+      users: "",
+    };
+  },
   props: {
     msg: String,
+  },
+  methods: {
+    afficheUsers() {
+      configAxios.get(`users`).then((response) => {
+        this.users = response.data;
+        console.log(this.users);
+      });
+    },
   },
 };
 </script>
