@@ -19,6 +19,8 @@
                   ><i class="fas fa-user-plus"></i
                 ></span>
                 <input
+                  id="username"
+                  name="username"
                   type="text"
                   class="form-control"
                   placeholder="Username"
@@ -28,13 +30,21 @@
                 <span class="input-group-text bg-primary"
                   ><i class="fas fa-envelope"></i>
                 </span>
-                <input type="email" class="form-control" placeholder="Email" />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  class="form-control"
+                  placeholder="Email"
+                />
               </div>
               <div class="input-group mb-3">
                 <span class="input-group-text bg-primary"
                   ><i class="fas fa-key"></i
                 ></span>
                 <input
+                  id="password"
+                  name="password"
                   type="password"
                   class="form-control"
                   placeholder="password"
@@ -45,10 +55,12 @@
                   v-if="this.inscrit == true"
                   class="btn btn-primary"
                   type="button"
+                  @click="register"
                 >
                   <span></span> S'inscrire
                 </button>
                 <button
+                  @click="login"
                   v-if="this.inscrit == false"
                   class="btn btn-primary"
                   type="button"
@@ -77,16 +89,72 @@
 </template>
 
 <script>
+import configAxios from "@/config/axios/configAxios.js";
+import jwtDecode from "jwt-decode";
+import store from "../../store/index";
+
 export default {
   data() {
     return {
       inscrit: false,
+      admin: false,
+      logged: false,
     };
   },
   methods: {
     displayInscrit() {
       this.inscrit = !this.inscrit;
-      console.log(this.inscrit);
+      let username = document.getElementById("username");
+      let email = document.getElementById("email");
+      let password = document.getElementById("password");
+      if (username) {
+        username.value = "";
+      }
+      if (password) {
+        password.value = "";
+      }
+      if (email) {
+        email.value = "";
+      }
+    },
+    register() {
+      let username = document.getElementById("username").value;
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      configAxios
+        .post("signup", {
+          username: username,
+          email: email,
+          password: password,
+        })
+        .then(function () {
+          console.log("C'est tout bon");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    login() {
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      configAxios
+        .post("login", {
+          email: email,
+          password: password,
+        })
+        .then((response) => {
+          localStorage.setItem("token", response.data.token);
+          const decoded = jwtDecode(response.data.token);
+          this.admin = decoded.isAdmin;
+          this.logged = true;
+          console.log(this.admin);
+          store.dispatch("getUserLogged", this.logged);
+          store.dispatch("getUserIsAdmin", this.admin);
+          this.$router.push("/");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   },
 };

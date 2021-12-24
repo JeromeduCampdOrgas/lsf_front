@@ -24,11 +24,13 @@
 
 <script>
 import configAxios from "../config/axios/configAxios";
+import store from "../store/index";
 export default {
   name: "HelloWorld",
   data() {
     return {
       users: "",
+      store,
     };
   },
   props: {

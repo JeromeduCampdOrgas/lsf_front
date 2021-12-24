@@ -1,6 +1,7 @@
 <template>
   <img src="../assets/logo/logo.png" alt="" />
   <h1>Lévriers sans frontières</h1>
+
   <div class="container-fluid">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
@@ -23,8 +24,9 @@
                 >Home</router-link
               >
             </li>
+            <administration v-if="store.state.isAdmin === 'isAdmin'" />
 
-            <li v-if="this.loggedIn" class="nav-item">
+            <li v-if="store.state.isAdmin === 'isAdmin'" class="nav-item">
               <router-link to="/about" class="nav-link">About</router-link>
             </li>
             <li class="nav-item dropdown">
@@ -51,7 +53,33 @@
               <a class="nav-link disabled">Disabled</a>
             </li>
           </ul>
+
           <form class="d-flex">
+            <!-- Profil -->
+            <div class="btn-group mx-5">
+              <button
+                class="btn btn-light btn-sm dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Mon profil
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#"
+                    >Modifier mes informations</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">Supprimer mon compte</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+              </ul>
+            </div>
+
+            <!----------- FIN PROFIL     -------------------------------->
+
             <input
               class="form-control me-2"
               type="search"
@@ -62,7 +90,13 @@
               Search
             </button>
           </form>
-          <router-link to="/user">Se connecter</router-link>
+
+          <router-link v-if="!store.state.userLogged" to="/user"
+            >Se connecter</router-link
+          >
+          <router-link v-if="store.state.userLogged" to="/" @click="disconnect"
+            >Se déconnecter</router-link
+          >
         </div>
       </div>
     </nav>
@@ -70,12 +104,24 @@
 </template>
 
 <script>
+import administration from "./Admin.vue";
+import store from "../store/index";
 export default {
   name: "Header",
   data() {
     return {
-      loggedIn: false,
+      store,
     };
+  },
+  components: {
+    administration,
+  },
+  methods: {
+    disconnect() {
+      localStorage.clear();
+      store.dispatch("getUserLogged", false);
+      store.dispatch("getUserIsAdmin", "");
+    },
   },
 };
 </script>
