@@ -50,6 +50,12 @@
                   placeholder="password"
                 />
               </div>
+              <!-------------------------- Image ------------------------->
+              <div class="col-md-9 pe-5" v-if="this.inscrit == true">
+                <input class="form-control" id="avatar" type="file" />
+                <div class="small text-muted mt-2">choisissez une photo</div>
+              </div>
+              <!-------------------- Image ---------------------------->
               <div class="d-grid col-12 mx-auto">
                 <button
                   v-if="this.inscrit == true"
@@ -99,6 +105,9 @@ export default {
       inscrit: false,
       admin: false,
       logged: false,
+      username: "",
+      userid: "",
+      useremail: "",
     };
   },
   methods: {
@@ -121,11 +130,13 @@ export default {
       let username = document.getElementById("username").value;
       let email = document.getElementById("email").value;
       let password = document.getElementById("password").value;
+      let avatar = document.getElementById("avatar").value;
       configAxios
         .post("signup", {
           username: username,
           email: email,
           password: password,
+          avatar: avatar,
         })
         .then(function () {
           console.log("C'est tout bon");
@@ -146,10 +157,16 @@ export default {
           localStorage.setItem("token", response.data.token);
           const decoded = jwtDecode(response.data.token);
           this.admin = decoded.isAdmin;
+          this.username = decoded.username;
+          this.userid = decoded.userId;
+          this.useremail = decoded.email;
           this.logged = true;
           console.log(this.admin);
           store.dispatch("getUserLogged", this.logged);
           store.dispatch("getUserIsAdmin", this.admin);
+          store.dispatch("getUserName", this.username);
+          store.dispatch("getUserId", this.userid);
+          store.dispatch("getUserEmail", this.useremail);
           this.$router.push("/");
         })
         .catch(function (error) {

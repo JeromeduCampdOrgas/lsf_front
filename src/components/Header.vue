@@ -56,7 +56,7 @@
 
           <form class="d-flex">
             <!-- Profil -->
-            <div class="btn-group mx-5">
+            <div class="btn-group mx-5" v-if="store.state.userLogged">
               <button
                 class="btn btn-light btn-sm dropdown-toggle"
                 type="button"
@@ -66,10 +66,12 @@
                 Mon profil
               </button>
               <ul class="dropdown-menu">
+                {{
+                  store.state.username
+                }}
                 <li>
-                  <a class="dropdown-item" href="#"
-                    >Modifier mes informations</a
-                  >
+                  <router-link to="/user/profil">Mon compte</router-link>
+                  <!--<a class="dropdown-item" href="#">Mon compte</a>-->
                 </li>
                 <li>
                   <a class="dropdown-item" href="#">Supprimer mon compte</a>
