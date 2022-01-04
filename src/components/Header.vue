@@ -74,7 +74,9 @@
                   <!--<a class="dropdown-item" href="#">Mon compte</a>-->
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#">Supprimer mon compte</a>
+                  <a class="dropdown-item" href="#" @click="deleteAccount"
+                    >Supprimer mon compte</a
+                  >
                 </li>
                 <li><hr class="dropdown-divider" /></li>
               </ul>
@@ -108,6 +110,9 @@
 <script>
 import administration from "./Admin.vue";
 import store from "../store/index";
+import configAxios from "../config/axios/configAxios";
+import razStore from "../services/store";
+
 export default {
   name: "Header",
   data() {
@@ -123,6 +128,21 @@ export default {
       localStorage.clear();
       store.dispatch("getUserLogged", false);
       store.dispatch("getUserIsAdmin", "");
+    },
+    deleteAccount() {
+      let userId = store.getters.getUserUserId;
+      configAxios
+        .delete(`users/${userId}`)
+        .then(() => {
+          console.log("votre compte a été supprimé avec succès");
+          localStorage.clear();
+          razStore.razUserLogged();
+          razStore.razIsAdmin();
+          razStore.razUserName();
+          razStore.razUserId();
+          razStore.razUserMail();
+        })
+        .catch((err) => console.log(err));
     },
   },
 };

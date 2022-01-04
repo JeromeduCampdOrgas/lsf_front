@@ -1,4 +1,5 @@
 import Vuex from "vuex";
+import persistedState from "vuex-persistedstate";
 
 /********* STATE **************************/
 const state = {
@@ -8,6 +9,7 @@ const state = {
   userName: "",
   userId: "",
   userEmail: "",
+  inscription: false,
 };
 
 /********* GETTERS ************************/
@@ -16,6 +18,7 @@ const getters = {
   getUserLogged: () => {
     return state.userLogged;
   },
+
   getUserIsAdmin: () => {
     return state.isAdmin;
   },
@@ -28,6 +31,9 @@ const getters = {
   getUserUserEmail: () => {
     return state.userEmail;
   },
+  getInscription: () => {
+    return state.inscription;
+  },
 };
 
 /********* MUTATIONS  ********************/
@@ -36,6 +42,7 @@ const mutations = {
   SET_USER_LOGGED: (state, logged) => {
     state.userLogged = logged;
   },
+
   SET_USER_ISADMIN: (state, isAdmin) => {
     state.isAdmin = isAdmin;
   },
@@ -48,6 +55,9 @@ const mutations = {
   SET_USER_EMAIL: (state, email) => {
     state.userEmail = email;
   },
+  SET_INSCRIPTION: (state, inscription) => {
+    state.inscription = inscription;
+  },
 };
 
 /********* ACTIONS ***********************/
@@ -56,10 +66,10 @@ const actions = {
   getUserLogged: ({ commit }, logged) => {
     commit("SET_USER_LOGGED", logged);
   },
+
   getUserIsAdmin: ({ commit }, isadmin) => {
     commit("SET_USER_ISADMIN", isadmin);
   },
-
   getUserName: ({ commit }, username) => {
     commit("SET_USER_USERNAME", username);
   },
@@ -69,9 +79,13 @@ const actions = {
   getUserEmail: ({ commit }, email) => {
     commit("SET_USER_EMAIL", email);
   },
+  getInscription: ({ commit }, inscription) => {
+    commit("SET_INSCRIPTION", inscription);
+  },
 };
 
 export default new Vuex.Store({
+  plugins: [persistedState()],
   state,
   getters,
   mutations,

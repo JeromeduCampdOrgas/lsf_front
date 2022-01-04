@@ -1,20 +1,24 @@
 <template>
   <div class="container-fluid vh-100" style="margin-top: 50px">
+    {{ store.state.inscription }}
     <div class="" style="margin-top: 100px">
       <div class="rounded d-flex justify-content-center">
         <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
           <div class="text-center">
-            <h3 v-if="this.inscrit == true" class="text-primary">
+            <h3 v-if="store.state.inscription == true" class="text-primary">
               Créer un compte
             </h3>
 
-            <h3 v-if="this.inscrit == false" class="text-primary">
+            <h3 v-if="store.state.inscription == false" class="text-primary">
               Se connecter
             </h3>
           </div>
           <div class="p-4">
             <form action="">
-              <div v-if="this.inscrit == true" class="input-group mb-3">
+              <div
+                v-if="store.state.inscription == true"
+                class="input-group mb-3"
+              >
                 <span class="input-group-text bg-primary"
                   ><i class="fas fa-user-plus"></i
                 ></span>
@@ -50,15 +54,15 @@
                   placeholder="password"
                 />
               </div>
-              <!-------------------------- Image ------------------------->
-              <div class="col-md-9 pe-5" v-if="this.inscrit == true">
+              <!-------------------------- Image -------------------------
+              <div class="col-md-9 pe-5" v-if="this.inscription == true">
                 <input class="form-control" id="avatar" type="file" />
                 <div class="small text-muted mt-2">choisissez une photo</div>
               </div>
-              <!-------------------- Image ---------------------------->
+              -------------------- Image ---------------------------->
               <div class="d-grid col-12 mx-auto">
                 <button
-                  v-if="this.inscrit == true"
+                  v-if="store.state.inscription == true"
                   class="btn btn-primary"
                   type="button"
                   @click="register"
@@ -67,20 +71,26 @@
                 </button>
                 <button
                   @click="login"
-                  v-if="this.inscrit == false"
+                  v-if="store.state.inscription == false"
                   class="btn btn-primary"
                   type="button"
                 >
                   <span></span> Se connecter
                 </button>
               </div>
-              <p v-if="this.inscrit == false" class="text-center mt-3">
+              <p
+                v-if="store.state.inscription == false"
+                class="text-center mt-3"
+              >
                 Pas encore de compte?
                 <span class="text-primary register" @click="displayInscrit"
                   >S'inscrire</span
                 >
               </p>
-              <p v-if="this.inscrit == true" class="text-center mt-3">
+              <p
+                v-if="store.state.inscription == true"
+                class="text-center mt-3"
+              >
                 Déjà un compte?
                 <span class="text-primary register" @click="displayInscrit"
                   >Se connecter</span
@@ -102,17 +112,17 @@ import store from "../../store/index";
 export default {
   data() {
     return {
-      inscrit: false,
       admin: false,
       logged: false,
       username: "",
       userid: "",
       useremail: "",
+      store,
     };
   },
   methods: {
     displayInscrit() {
-      this.inscrit = !this.inscrit;
+      store.dispatch("getInscription", !store.state.inscription);
       let username = document.getElementById("username");
       let email = document.getElementById("email");
       let password = document.getElementById("password");
@@ -130,19 +140,19 @@ export default {
       let username = document.getElementById("username").value;
       let email = document.getElementById("email").value;
       let password = document.getElementById("password").value;
-      let avatar = document.getElementById("avatar").value;
+
       configAxios
         .post("signup", {
           username: username,
           email: email,
           password: password,
-          avatar: avatar,
         })
         .then(function () {
           console.log("C'est tout bon");
+          store.dispatch("getInscription", false);
         })
         .catch(function (error) {
-          console.log(error);
+          console.log("message" + error);
         });
     },
     login() {
@@ -161,12 +171,13 @@ export default {
           this.userid = decoded.userId;
           this.useremail = decoded.email;
           this.logged = true;
-          console.log(this.admin);
+
           store.dispatch("getUserLogged", this.logged);
           store.dispatch("getUserIsAdmin", this.admin);
           store.dispatch("getUserName", this.username);
           store.dispatch("getUserId", this.userid);
           store.dispatch("getUserEmail", this.useremail);
+
           this.$router.push("/");
         })
         .catch(function (error) {
