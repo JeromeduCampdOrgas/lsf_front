@@ -1,13 +1,13 @@
 <template>
   <h1>Tous les inscrits</h1>
-  <allusers />
+  <ALLUSERS />
 </template>
 
 <script>
-import allusers from "../../../components/admin/allUsers.vue";
+import ALLUSERS from "../../../components/admin/allUsers.vue";
 export default {
   components: {
-    allusers,
+    ALLUSERS,
   },
 };
 </script>

@@ -1,6 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-
+import store from "../store/index";
+function guardMyroute(to, from, next) {
+  let isAuthenticated = false;
+  let token = localStorage.getItem("token");
+  if (token) {
+    isAuthenticated = true;
+  } else {
+    isAuthenticated = false;
+  }
+  if (isAuthenticated) {
+    if (store.state.isAdmin == "isAdmin") {
+      next();
+    } else {
+      next("/");
+    }
+  } else {
+    next("/");
+  }
+}
 const routes = [
   {
     path: "/",
@@ -26,10 +44,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/users/userProfil.vue"),
   },
+
   // Admin routes
   {
     path: "/admin/users",
     name: "allUsers",
+    beforeEnter: guardMyroute,
     component: () =>
       import(
         /* webpackChunkName: "about" */ "../views/admin/users/allUsers.vue"
@@ -38,6 +58,7 @@ const routes = [
   {
     path: "/admin/users/edit",
     name: "userForm",
+    beforeEnter: guardMyroute,
     component: () =>
       import(
         /* webpackChunkName: "about" */ "../views/admin/users/userForm.vue"
