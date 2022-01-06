@@ -1,4 +1,5 @@
 <template>
+  <h1>Tous les inscrits</h1>
   <allusers />
 </template>
 

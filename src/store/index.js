@@ -10,6 +10,10 @@ const state = {
   userId: "",
   userEmail: "",
   inscription: false,
+  //Admin
+  ///Users
+  users: "",
+  selectedUser: "",
 };
 
 /********* GETTERS ************************/
@@ -33,6 +37,14 @@ const getters = {
   },
   getInscription: () => {
     return state.inscription;
+  },
+  //Admin
+  ///Users
+  getUsers: () => {
+    return state.users;
+  },
+  getSelectedUser: () => {
+    return state.selectedUser;
   },
 };
 
@@ -58,6 +70,14 @@ const mutations = {
   SET_INSCRIPTION: (state, inscription) => {
     state.inscription = inscription;
   },
+  //Admin
+  /// Users
+  SET_ALL_USERS: (state, users) => {
+    state.users = users;
+  },
+  SET_SELECTED_USERID: (state, selectedUser) => {
+    state.selectedUser = selectedUser;
+  },
 };
 
 /********* ACTIONS ***********************/
@@ -81,6 +101,14 @@ const actions = {
   },
   getInscription: ({ commit }, inscription) => {
     commit("SET_INSCRIPTION", inscription);
+  },
+  // Admin
+  /////Users
+  getUsers: ({ commit }, users) => {
+    commit("SET_ALL_USERS", users);
+  },
+  getSelectedUser: ({ commit }, selectedUser) => {
+    commit("SET_SELECTED_USERID", selectedUser);
   },
 };
 

@@ -11,7 +11,10 @@
       Administration
     </a>
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <li><a class="dropdown-item" href="#">Utilisateurs</a></li>
+      <router-link class="dropdown-item" to="/admin/users"
+        >Utilisateurs</router-link
+      >
+
       <li><a class="dropdown-item" href="#">Refuges</a></li>
       <li><hr class="dropdown-divider" /></li>
       <li>

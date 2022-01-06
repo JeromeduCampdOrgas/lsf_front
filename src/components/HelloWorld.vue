@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <h1>Accueil</h1>
     <table class="table">
       <thead class="table-dark">
         <tr>
@@ -18,7 +19,7 @@
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-success" @click="afficheUsers">Valider</button>
+    <button class="btn btn-danger" @click="afficheUsers">Valider</button>
   </div>
 </template>
 

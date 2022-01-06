@@ -29,10 +29,18 @@ const routes = [
   // Admin routes
   {
     path: "/admin/users",
-    name: "adminUsers",
+    name: "allUsers",
     component: () =>
       import(
         /* webpackChunkName: "about" */ "../views/admin/users/allUsers.vue"
+      ),
+  },
+  {
+    path: "/admin/users/edit",
+    name: "userForm",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/admin/users/userForm.vue"
       ),
   },
 ];
