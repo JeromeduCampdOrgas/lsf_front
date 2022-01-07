@@ -14,8 +14,9 @@
       <router-link class="dropdown-item" to="/admin/users"
         >Utilisateurs</router-link
       >
-
-      <li><a class="dropdown-item" href="#">Refuges</a></li>
+      <router-link class="dropdown-item" to="/admin/refuges"
+        >Refuges</router-link
+      >
       <li><hr class="dropdown-divider" /></li>
       <li>
         <a class="dropdown-item" href="#">Something else here</a>

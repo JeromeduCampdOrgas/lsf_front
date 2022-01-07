@@ -64,6 +64,25 @@ const routes = [
         /* webpackChunkName: "about" */ "../views/admin/users/userForm.vue"
       ),
   },
+  {
+    path: "/admin/users/create",
+    name: "createUserForm",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/admin/users/createUserForm.vue"
+      ),
+  },
+  //Refuges
+  {
+    path: "/admin/refuges",
+    name: "allRefuges",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/admin/refuges/allRefuges.vue"
+      ),
+  },
 ];
 
 const router = createRouter({

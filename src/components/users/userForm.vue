@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid vh-100" style="margin-top: 50px">
-    {{ store.state.inscription }}
     <div class="" style="margin-top: 100px">
       <div class="rounded d-flex justify-content-center">
         <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">

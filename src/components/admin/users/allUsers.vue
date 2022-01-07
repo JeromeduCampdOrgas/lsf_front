@@ -1,5 +1,11 @@
 <template>
   <div class="hello">
+    <div class="d-flex flex-direction-row justify-content-around mb-5">
+      <h1>Tous les inscrits</h1>
+      <button class="btn btn-success" @click="createUser">
+        Créer un compte
+      </button>
+    </div>
     <table class="table">
       <thead class="table-dark">
         <tr>
@@ -39,8 +45,8 @@
 </template>
 
 <script>
-import configAxios from "../../config/axios/configAxios";
-import store from "../../store/index";
+import configAxios from "../../../config/axios/configAxios";
+import store from "../../../store/index";
 export default {
   name: "adminUsers",
   data() {
@@ -58,6 +64,9 @@ export default {
     msg: String,
   },
   methods: {
+    createUser() {
+      this.$router.push("/admin/users/create");
+    },
     editUser(e) {
       let elementId = e.target.parentNode.parentNode.childNodes[0].innerHTML;
       let elementUsername =
@@ -79,15 +88,15 @@ export default {
       if (isAdmin === "isAdmin") {
         let elementId = e.target.parentNode.parentNode.childNodes[0].innerHTML;
         if (confirm("Tu veux vraiment supprimer?")) {
-          configAxios
-            .delete(`admin/users/${elementId}`)
-            .then(() => {
-              this.$router.push("/admin/users");
-              console.log(
-                "Le compte ayant pour id " + elementId + " est supprimé"
-              );
-            })
-            .catch(() => console.log("Une erreur est survenue"));
+          configAxios.delete(`admin/users/${elementId}`);
+
+          configAxios.get(`users`).then((response) => {
+            this.users = response.data;
+            store.dispatch("getUsers", this.users);
+          });
+          e.target.parentNode.parentNode.remove();
+          this.$router.push("/admin/users");
+          console.log("Le compte ayant pour id " + elementId + " est supprimé");
         } else {
           ("C'est sauvegardé");
         }

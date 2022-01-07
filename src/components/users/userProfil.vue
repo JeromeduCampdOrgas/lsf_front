@@ -31,7 +31,18 @@
                   v-model="store.state.userEmail"
                 />
               </div>
-
+              <!--<div class="input-group mb-3">
+                <span class="input-group-text bg-primary"
+                  ><i class="fas fa-key"></i
+                ></span>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  class="form-control"
+                  placeholder="*******"
+                />
+              </div>-->
               <!-------------------------- Image -------------------------
               <div class="input-group mb-3">
                 <span class="input-group-text bg-primary"
@@ -91,12 +102,14 @@ export default {
     validationModif() {
       let username = document.getElementById("username").value;
       let email = document.getElementById("email").value;
+      let password = document.getElementById("password");
       //let image = document.getElementById("avatar").value;
-      let userId = store.getters.getUserUserId;
+      let userId = store.state.userId;
+
       const formData = new FormData();
       formData.append("username", username);
       formData.append("email", email);
-      //formData.append("image", image);
+      formData.append("password", password);
       configAxios
         .put(`users/${userId}`, formData)
         .then(() => console.log("C'est fait!!!"));
