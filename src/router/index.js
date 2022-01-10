@@ -83,6 +83,15 @@ const routes = [
         /* webpackChunkName: "about" */ "../views/admin/refuges/allRefuges.vue"
       ),
   },
+  {
+    path: "/admin/refuges/create",
+    name: "createRefugeForm",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/admin/refuges/createRefugeForm.vue"
+      ),
+  },
 ];
 
 const router = createRouter({

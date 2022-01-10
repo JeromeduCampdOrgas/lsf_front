@@ -116,7 +116,8 @@ export default {
           password: password,
           isAdmin: isAdmin,
         })
-        .then(() => console.log("C'est fait!!!"));
+        .then(() => console.log("C'est fait!!!"))
+        .catch((err) => err);
     },
   },
 };
