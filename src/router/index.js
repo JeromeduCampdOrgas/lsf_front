@@ -102,6 +102,15 @@ const routes = [
       localStorage.getItem("token") ? next() : next({ name: "Login" });
     },
   },
+  {
+    path: "/admin/chiens/create",
+    name: "createChienForm",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/admin/chiens/createChienForm.vue"
+      ),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

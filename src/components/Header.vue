@@ -112,7 +112,6 @@ import administration from "./Admin.vue";
 import store from "../store/index";
 import configAxios from "../config/axios/configAxios";
 import razStore from "../services/store";
-
 export default {
   name: "Header",
   data() {

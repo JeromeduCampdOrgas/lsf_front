@@ -1,12 +1,6 @@
 <template>
   <div class="hello">
     <div class="d-flex flex-direction-row justify-content-around mb-5">
-      <h1>Tous les refuges</h1>
-      <button class="btn btn-success" @click="createRefuge">
-        Nouveau refuge
-      </button>
-    </div>
-    <div class="d-flex flex-direction-row justify-content-around mb-5">
       <div
         v-for="refuge in this.refuges"
         :key="refuge.id"
@@ -24,8 +18,8 @@
 </template>
 
 <script>
-import configAxios from "../../config/axios/configAxios";
-import store from "../../store/index";
+import configAxios from "../../../config/axios/configAxios";
+import store from "../../../store/index";
 export default {
   data() {
     return {

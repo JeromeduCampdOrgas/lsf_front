@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import REFUGEFORM from "../../../components/refuges/createRefugeForm.vue.vue";
+import REFUGEFORM from "../../../components/admin/refuges/createRefugeForm.vue.vue";
 export default {
   components: {
     REFUGEFORM,

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ALLREFUGES from "../../../components/refuges/allRefuges.vue";
+import ALLREFUGES from "../../../components/admin/refuges/allRefuges.vue";
 export default {
   components: {
     ALLREFUGES,

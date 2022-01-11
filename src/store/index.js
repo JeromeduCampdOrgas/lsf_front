@@ -17,6 +17,7 @@ const state = {
   ///Refuges
   refuges: "",
   refuge: "",
+  modif: false,
 };
 
 /********* GETTERS ************************/
@@ -55,6 +56,9 @@ const getters = {
   },
   getSelectedRefuge: () => {
     return state.refuge;
+  },
+  getModif: () => {
+    return state.modif;
   },
 };
 
@@ -95,6 +99,9 @@ const mutations = {
   SET_SELECTED_REFUGE: (state, refuge) => {
     state.refuge = refuge;
   },
+  SET_MODIF: (state, modif) => {
+    state.modif = modif;
+  },
 };
 
 /********* ACTIONS ***********************/
@@ -133,6 +140,9 @@ const actions = {
   },
   getSelectedRefuge: ({ commit }, refuge) => {
     commit("SET_SELECTED_REFUGE", refuge);
+  },
+  getModif: ({ commit }, modif) => {
+    commit("SET_MODIF", modif);
   },
 };
 

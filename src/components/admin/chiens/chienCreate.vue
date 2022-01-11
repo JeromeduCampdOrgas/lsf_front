@@ -4,7 +4,7 @@
       <div class="rounded d-flex justify-content-center">
         <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
           <div class="text-center">
-            <h3 class="text-primary">Créer un refuge</h3>
+            <h3 class="text-primary">Créer un chien</h3>
           </div>
           <div class="p-4">
             <form action="" enctype="multipart/form-data">
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import configAxios from "../../config/axios/configAxios";
+import configAxios from "../../../config/axios/configAxios";
 export default {
   data() {
     return {
@@ -81,7 +81,6 @@ export default {
     retour() {
       this.$router.push("/admin/refuges");
     },
-
     onFileChange(event) {
       this.dataRefuge.picture = event.target.files[0];
     },
@@ -89,7 +88,6 @@ export default {
       const formData = new FormData();
       formData.set("name", this.dataRefuge.name);
       formData.set("picture", this.dataRefuge.picture);
-
       configAxios
         .post(`/refuge`, formData, {
           headers: {
