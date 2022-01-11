@@ -52,6 +52,11 @@
                   <span></span> Fermer
                 </button>
               </div>
+              <div>
+                <span v-if="this.refuge == 'Ce refuge existe déjà'"
+                  >Ce refuge existe déjà</span
+                >
+              </div>
             </form>
           </div>
         </div>
@@ -69,6 +74,7 @@ export default {
         name: null,
         picture: null,
       },
+      refuge: "",
     };
   },
   methods: {
@@ -83,9 +89,7 @@ export default {
       const formData = new FormData();
       formData.set("name", this.dataRefuge.name);
       formData.set("picture", this.dataRefuge.picture);
-      for (let value of formData.values()) {
-        console.log(value);
-      }
+
       configAxios
         .post(`/refuge`, formData, {
           headers: {
@@ -93,9 +97,20 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then(this.$router.push("/admin/refuges"))
-        .catch(function () {
-          console.log("que pasa");
+        .then((response) => {
+          if (response !== null) {
+            if (response.data.message == "Refuge successfully created") {
+              this.refuge = "Le refuge a été créé avec succès";
+              this.$router.push("/admin/refuges");
+            } else {
+              this.refuge = "Ce refuge existe déjà";
+              return this.refuge;
+            }
+          }
+        })
+        .catch(() => {
+          this.refuge = "Une erreur est survenue";
+          //console.log(this.refuge);
         });
     },
   },

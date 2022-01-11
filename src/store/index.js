@@ -14,6 +14,9 @@ const state = {
   ///Users
   users: "",
   selectedUser: "",
+  ///Refuges
+  refuges: "",
+  refuge: "",
 };
 
 /********* GETTERS ************************/
@@ -45,6 +48,13 @@ const getters = {
   },
   getSelectedUser: () => {
     return state.selectedUser;
+  },
+  //refuges
+  getRefuges: () => {
+    return state.refuges;
+  },
+  getSelectedRefuge: () => {
+    return state.refuge;
   },
 };
 
@@ -78,6 +88,13 @@ const mutations = {
   SET_SELECTED_USERID: (state, selectedUser) => {
     state.selectedUser = selectedUser;
   },
+  //Refuges
+  SET_ALL_REFUGES: (state, refuges) => {
+    state.refuges = refuges;
+  },
+  SET_SELECTED_REFUGE: (state, refuge) => {
+    state.refuge = refuge;
+  },
 };
 
 /********* ACTIONS ***********************/
@@ -109,6 +126,13 @@ const actions = {
   },
   getSelectedUser: ({ commit }, selectedUser) => {
     commit("SET_SELECTED_USERID", selectedUser);
+  },
+  //Refuges
+  getRefuges: ({ commit }, refuges) => {
+    commit("SET_ALL_REFUGES", refuges);
+  },
+  getSelectedRefuge: ({ commit }, refuge) => {
+    commit("SET_SELECTED_REFUGE", refuge);
   },
 };
 

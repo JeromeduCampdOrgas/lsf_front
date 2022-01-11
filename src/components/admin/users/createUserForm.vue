@@ -80,6 +80,9 @@
                 >
                   <span></span> Fermer
                 </button>
+                <button class="btn btn-danger" @click="getOneRefuge">
+                  trouver refuge
+                </button>
               </div>
             </form>
           </div>

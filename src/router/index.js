@@ -92,8 +92,17 @@ const routes = [
         /* webpackChunkName: "about" */ "../views/admin/refuges/createRefugeForm.vue"
       ),
   },
+  {
+    path: "/admin/refuges/:refuge",
+    component: () =>
+      import(
+        /* webpackChunkName: "login" */ "../views/admin/refuges/chiensRefuge.vue"
+      ),
+    beforeEnter: (to, from, next) => {
+      localStorage.getItem("token") ? next() : next({ name: "Login" });
+    },
+  },
 ];
-
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
