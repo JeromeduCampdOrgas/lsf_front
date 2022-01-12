@@ -59,7 +59,7 @@ export default {
     selectedRefuge(e) {
       let selectedRefuge = e.target.parentNode.childNodes[0].alt;
       store.dispatch("getSelectedRefuge", selectedRefuge);
-      this.$router.push("/admin/refuges/creat" + selectedRefuge);
+      this.$router.push("/admin/refuges/create" + selectedRefuge);
     },
     editRefuge(e) {
       let selectedRefuge =
@@ -67,7 +67,7 @@ export default {
 
       store.dispatch("getSelectedRefuge", selectedRefuge);
       store.dispatch("getModif", true);
-      this.$router.push("/admin/refuges/create");
+      this.$router.push("/admin/refuges/update");
     },
   },
   beforeMount() {

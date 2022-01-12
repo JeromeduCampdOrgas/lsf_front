@@ -93,6 +93,15 @@ const routes = [
       ),
   },
   {
+    path: "/admin/refuges/update",
+    name: "updateRefugeForm",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/admin/refuges/updateRefugeForm.vue"
+      ),
+  },
+  {
     path: "/admin/refuges/:refuge",
     component: () =>
       import(

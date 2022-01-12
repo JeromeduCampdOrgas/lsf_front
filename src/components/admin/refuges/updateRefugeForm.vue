@@ -4,7 +4,7 @@
       <div class="rounded d-flex justify-content-center">
         <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
           <div class="text-center">
-            <h3 class="text-primary">Créer un refuge</h3>
+            <h3 class="text-primary">Modifier un refuge</h3>
           </div>
           <div class="p-4">
             <form action="" enctype="multipart/form-data">
@@ -17,8 +17,7 @@
                   name="name"
                   type="text"
                   class="form-control"
-                  placeholder="name"
-                  v-model="dataRefuge.name"
+                  :value="this.$store.state.refuge"
                 />
               </div>
               <!-------------------------- Image ------------------------->
@@ -42,7 +41,7 @@
                   type="button"
                   @click="createRefuge"
                 >
-                  <span></span> Valider
+                  <span></span> Modifier
                 </button>
 
                 <button
@@ -65,56 +64,21 @@
     </div>
   </div>
 </template>
-
 <script>
-import configAxios from "../../../config/axios/configAxios";
-//import store from "../../../store/index";
+import store from "../../../store/index";
 export default {
   data() {
     return {
-      dataRefuge: {
-        name: null,
-        picture: null,
-      },
       refuge: "",
     };
   },
   methods: {
     retour() {
+      store.dispatch("getModif", false);
+      store.dispatch("getSelectedRefuge", "");
       this.$router.push("/admin/refuges");
-    },
-    onFileChange(event) {
-      this.dataRefuge.picture = event.target.files[0];
-    },
-    createRefuge() {
-      const formData = new FormData();
-      formData.set("name", this.dataRefuge.name);
-      formData.set("picture", this.dataRefuge.picture);
-      configAxios
-        .post(`/refuge`, formData, {
-          headers: {
-            // Multer only parses "multipart/form-data" requests
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          if (response !== null) {
-            if (response.data.message == "Refuge successfully created") {
-              this.refuge = "Le refuge a été créé avec succès";
-              this.$router.push("/admin/refuges");
-            } else {
-              this.refuge = "Ce refuge existe déjà";
-              return this.refuge;
-            }
-          }
-        })
-        .catch(() => {
-          this.refuge = "Une erreur est survenue";
-          //console.log(this.refuge);
-        });
     },
   },
 };
 </script>
-
-<style></style>
+<style scoped></style>

@@ -127,6 +127,12 @@ export default {
       localStorage.clear();
       store.dispatch("getUserLogged", false);
       store.dispatch("getUserIsAdmin", "");
+      store.dispatch("getUserName", "");
+      store.dispatch("getUserId", "");
+      store.dispatch("getUserEmail", "");
+      store.dispatch("getSelectedRefuge", "");
+      store.dispatch("getModif", false);
+      store.dispatch("getUsers", "");
     },
     deleteAccount() {
       let userId = store.getters.getUserUserId;
