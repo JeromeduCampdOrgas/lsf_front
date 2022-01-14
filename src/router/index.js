@@ -111,6 +111,16 @@ const routes = [
       localStorage.getItem("token") ? next() : next({ name: "Login" });
     },
   },
+  //Chiens
+  {
+    path: "/admin/chiens/:refugeId",
+    name: "allChiens",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/admin/chiens/allChiens.vue"
+      ),
+  },
   {
     path: "/admin/chiens/create",
     name: "createChienForm",

@@ -18,6 +18,7 @@
                   type="text"
                   class="form-control"
                   :value="this.$store.state.refuge"
+                  @blur="newName"
                 />
               </div>
               <!-------------------------- Image ------------------------->
@@ -39,7 +40,7 @@
                 <button
                   class="btn btn-primary col-5 j"
                   type="button"
-                  @click="createRefuge"
+                  @click="updateRefuge"
                 >
                   <span></span> Modifier
                 </button>
@@ -66,17 +67,54 @@
 </template>
 <script>
 import store from "../../../store/index";
+import configAxios from "../../../config/axios/configAxios";
 export default {
   data() {
     return {
-      refuge: "",
+      modifRefuge: [],
+      refuge: store.state.refuge,
+      nom: "",
+      dataRefuge: {
+        name: null,
+        picture: null,
+      },
     };
   },
   methods: {
+    test() {
+      console.log("name: " + this.dataRefuge.name);
+      console.log("picture: " + this.dataRefuge.picture);
+    },
     retour() {
       store.dispatch("getModif", false);
       store.dispatch("getSelectedRefuge", "");
       this.$router.push("/admin/refuges");
+    },
+    newName(e) {
+      this.dataRefuge.name = e.target.value;
+    },
+    onFileChange(e) {
+      this.dataRefuge.picture = e.target.files[0];
+    },
+
+    updateRefuge() {
+      const formData = new FormData();
+      formData.set("name", this.dataRefuge.name);
+      formData.set("picture", this.dataRefuge.picture);
+      let refugeId = store.state.refugeId;
+      /*for (var p of formData) {
+        console.log(p);
+      }*/
+
+      configAxios
+        .put(`refuge/${refugeId}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then(() => {
+          this.$router.push("/admin/refuges");
+          console.log("C'est fait!!!");
+        })
+        .catch((err) => err);
     },
   },
 };

@@ -11,8 +11,8 @@
         <tr>
           <th class="image">Logo</th>
           <th>Nom</th>
-
           <th id="actions">Actions</th>
+          <th>Chiens</th>
         </tr>
       </thead>
       <tbody>
@@ -37,6 +37,11 @@
               Supprimer
             </button>
           </td>
+          <td>
+            <button type="button" class="btn btn-success" @click="chiens">
+              Chiens
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -44,12 +49,13 @@
 </template>
 
 <script>
-import configAxios from "../../../config/axios/configAxios";
+//import configAxios from "../../../config/axios/configAxios";
 import store from "../../../store/index";
 export default {
   data() {
     return {
-      refuges: "",
+      refuges: store.state.refuges,
+      refugeId: store.state.refugeId,
     };
   },
   methods: {
@@ -64,17 +70,36 @@ export default {
     editRefuge(e) {
       let selectedRefuge =
         e.target.parentNode.parentNode.childNodes[1].innerHTML;
-
+      for (let i = 0; i < this.refuges.length; i++) {
+        if (this.refuges[i].name == selectedRefuge) {
+          store.dispatch("getRefugeId", this.refuges[i].id);
+        }
+      }
       store.dispatch("getSelectedRefuge", selectedRefuge);
       store.dispatch("getModif", true);
       this.$router.push("/admin/refuges/update");
     },
+    //routes vers les chiens
+    chiens(e) {
+      let refuge = e.target.parentNode.parentNode.childNodes[1].innerHTML;
+
+      for (let i = 0; i < this.refuges.length; i++) {
+        if (this.refuges[i].name == refuge) {
+          this.refugeId = this.refuges[i].id;
+          store.dispatch("getRefugeId", this.refuges[i].id);
+        }
+      }
+      store.dispatch("getSelectedRefuge", refuge);
+      /*configAxios.get(`chiens/${this.refugeId}`).then((response) => {
+        store.dispatch("getChiens", response.data);
+      });*/
+      this.$router.push(`/admin/chiens/${this.refugeId}`);
+    },
   },
-  beforeMount() {
-    configAxios.get(`refuge`).then((response) => {
-      this.refuges = response.data;
-      store.dispatch("getRefuges", this.refuges);
-      store.dispatch("getSelectedRefuge", "");
+  beforeMount() {},
+  updated() {
+    this.$nextTick(function () {
+      store.dispatch("getRefugeId", this.refugeId);
     });
   },
 };

@@ -18,6 +18,9 @@ const state = {
   refuges: "",
   refuge: "",
   modif: false,
+  refugeId: "",
+  ///chiens
+  chiens: "",
 };
 
 /********* GETTERS ************************/
@@ -59,6 +62,13 @@ const getters = {
   },
   getModif: () => {
     return state.modif;
+  },
+  getRefugeId: () => {
+    return state.refugeId;
+  },
+  //chiens
+  getChiens: () => {
+    return state.chiens;
   },
 };
 
@@ -102,6 +112,12 @@ const mutations = {
   SET_MODIF: (state, modif) => {
     state.modif = modif;
   },
+  SET_REFUGE_ID: (state, refugeId) => {
+    state.refugeId = refugeId;
+  },
+  SET_ALL_CHIENS: (state, chiens) => {
+    state.chiens = chiens;
+  },
 };
 
 /********* ACTIONS ***********************/
@@ -143,6 +159,13 @@ const actions = {
   },
   getModif: ({ commit }, modif) => {
     commit("SET_MODIF", modif);
+  },
+  getRefugeId: ({ commit }, id) => {
+    commit("SET_REFUGE_ID", id);
+  },
+  //Chiens
+  getChiens: ({ commit }, chiens) => {
+    commit("SET_ALL_CHIENS", chiens);
   },
 };
 

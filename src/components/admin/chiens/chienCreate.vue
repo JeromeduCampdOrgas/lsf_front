@@ -1,4 +1,5 @@
 <template>
+  refugeId: {{ this.refugeId }}
   <div class="container-fluid vh-100" style="margin-top: 50px">
     <div class="" style="margin-top: 100px">
       <div class="rounded d-flex justify-content-center">
@@ -18,11 +19,98 @@
                   type="text"
                   class="form-control"
                   placeholder="name"
-                  v-model="dataRefuge.name"
+                  v-model="this.dataChien.name"
                 />
               </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text bg-primary"
+                  ><i class="fas fa-barcode"></i
+                ></span>
+                <input
+                  id="puce"
+                  name="puce"
+                  type="text"
+                  class="form-control"
+                  placeholder="puce"
+                  v-model="dataChien.puce"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text bg-primary"
+                  ><i class="fas fa-venus-mars"></i
+                ></span>
+                <select
+                  id="sexe"
+                  name="sexe"
+                  class="form-control"
+                  v-model="dataChien.sexe"
+                >
+                  <option value="male">Mâle</option>
+                  <option value="female">Femelle</option>
+                </select>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text bg-primary"
+                  ><i class="far fa-arrow-alt-circle-right"></i
+                ></span>
+                <input
+                  id="age"
+                  name="age"
+                  type="text"
+                  class="form-control"
+                  placeholder="age"
+                  v-model="dataChien.age"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text bg-primary"
+                  ><i class="fas fa-text-height"></i
+                ></span>
+                <input
+                  id="taille"
+                  name="taille"
+                  type="text"
+                  class="form-control"
+                  placeholder="taille"
+                  v-model="dataChien.taille"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text bg-primary"
+                  ><i class="fas fa-cat"></i
+                ></span>
+                <select
+                  id="chat"
+                  name="chat"
+                  class="form-control"
+                  v-model="dataChien.chat"
+                >
+                  <option value="ok">OK</option>
+                  <option value="ko">KO</option>
+                  <option value="encours">En cours</option>
+                </select>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text bg-primary"
+                  ><i class="fas fa-battery-quarter"></i
+                ></span>
+                <select
+                  id="statut"
+                  name="statut"
+                  class="form-control"
+                  v-model="dataChien.statut"
+                >
+                  <option value="Adopte">Adopté</option>
+                  <option value="encours">Réservé</option>
+                  <option value="encours">En cours</option>
+                </select>
+              </div>
               <!-------------------------- Image ------------------------->
-              <div class="col-md-12 pe-5">
+              <h4>Photo principale</h4>
+              <div class="input-group mb-3">
+                <span class="input-group-text bg-primary"
+                  ><i class="far fa-image"></i
+                ></span>
                 <input
                   class="form-control"
                   id="avatar"
@@ -31,16 +119,32 @@
                   method="post"
                   @change="onFileChange"
                 />
-                <div class="small text-muted mt-2">choisissez une photo</div>
               </div>
               <!-------------------- Image ---------------------------->
+              <!-------------------------- Carousel ------------------------->
+              <h4>Carousel</h4>
+              <div class="input-group mb-5">
+                <span class="input-group-text bg-primary"
+                  ><i class="far fa-images"></i
+                ></span>
+                <input
+                  class="form-control"
+                  id="carousel"
+                  type="file"
+                  name="carousel"
+                  method="post"
+                  multiple
+                  @change="onCarouselChange"
+                />
+              </div>
+              <!-------------------- Carousel ---------------------------->
               <div
                 class="d-flex flex-row justify-content-between col-12 mx-auto"
               >
                 <button
                   class="btn btn-primary col-5 j"
                   type="button"
-                  @click="createRefuge"
+                  @click="createChien"
                 >
                   <span></span> Valider
                 </button>
@@ -52,11 +156,6 @@
                   <span></span> Fermer
                 </button>
               </div>
-              <div>
-                <span v-if="this.refuge == 'Ce refuge existe déjà'"
-                  >Ce refuge existe déjà</span
-                >
-              </div>
             </form>
           </div>
         </div>
@@ -67,14 +166,23 @@
 
 <script>
 import configAxios from "../../../config/axios/configAxios";
+import store from "../../../store/index";
 export default {
   data() {
     return {
-      dataRefuge: {
+      dataChien: {
         name: null,
+        puce: null,
+        sexe: null,
+        age: null,
+        taille: null,
+        chat: null,
+        statut: null,
         picture: null,
       },
-      refuge: "",
+      carousel: [],
+      refuge: store.state.refuge,
+      refugeId: store.state.refugeId,
     };
   },
   methods: {
@@ -82,29 +190,43 @@ export default {
       this.$router.push("/admin/refuges");
     },
     onFileChange(event) {
-      this.dataRefuge.picture = event.target.files[0];
+      this.dataChien.picture = event.target.files[0];
     },
-    createRefuge() {
+    onCarouselChange(event) {
+      let image = event.target.files;
+      this.carousel = image;
+      console.log(this.carousel);
+    },
+    createChien() {
+      let name = this.dataChien.name;
+      let puce = this.dataChien.puce;
+      let sexe = this.dataChien.sexe;
+      let age = this.dataChien.age;
+      let taille = this.dataChien.taille;
+      let chat = this.dataChien.chat;
+      let statut = this.dataChien.statut;
       const formData = new FormData();
-      formData.set("name", this.dataRefuge.name);
-      formData.set("picture", this.dataRefuge.picture);
+      formData.set("refugeId", this.refugeId);
+      formData.set("name", name);
+      formData.set("puce", puce);
+      formData.set("sexe", sexe);
+      formData.set("age", age);
+      formData.set("taille", taille);
+      formData.set("chat", chat);
+      formData.set("statut", statut);
+      formData.set("picture", this.dataChien.picture);
+      /*for (let value of formData) {
+        console.log(value);
+      }*/
       configAxios
-        .post(`/refuge`, formData, {
+        .post(`/chiens`, formData, {
           headers: {
             // Multer only parses "multipart/form-data" requests
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((response) => {
-          if (response !== null) {
-            if (response.data.message == "Refuge successfully created") {
-              this.refuge = "Le refuge a été créé avec succès";
-              this.$router.push("/admin/refuges");
-            } else {
-              this.refuge = "Ce refuge existe déjà";
-              return this.refuge;
-            }
-          }
+        .then(() => {
+          this.$router.push("/admin/refuges");
         })
         .catch(() => {
           this.refuge = "Une erreur est survenue";

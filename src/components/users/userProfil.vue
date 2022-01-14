@@ -112,7 +112,7 @@ export default {
       formData.append("password", password);
       configAxios
         .put(`users/${userId}`, formData)
-        .then(() => console.log("C'est fait!!!"));
+        .then((response) => console.log(response));
     },
   },
 };
