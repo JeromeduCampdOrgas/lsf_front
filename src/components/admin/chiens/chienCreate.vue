@@ -156,6 +156,11 @@
                   <span></span> Fermer
                 </button>
               </div>
+              <div class="erreur">
+                <span v-if="this.chien == 'Ce chien existe déjà'"
+                  >Ce chien existe déjà</span
+                >
+              </div>
             </form>
           </div>
         </div>
@@ -183,6 +188,9 @@ export default {
       carousel: [],
       refuge: store.state.refuge,
       refugeId: store.state.refugeId,
+      refuges: store.state.refuges,
+      chiens: store.state.chiens,
+      chien: "",
     };
   },
   methods: {
@@ -205,36 +213,42 @@ export default {
       let taille = this.dataChien.taille;
       let chat = this.dataChien.chat;
       let statut = this.dataChien.statut;
-      const formData = new FormData();
-      formData.set("refugeId", this.refugeId);
-      formData.set("name", name);
-      formData.set("puce", puce);
-      formData.set("sexe", sexe);
-      formData.set("age", age);
-      formData.set("taille", taille);
-      formData.set("chat", chat);
-      formData.set("statut", statut);
-      formData.set("picture", this.dataChien.picture);
-      /*for (let value of formData) {
-        console.log(value);
-      }*/
-      configAxios
-        .post(`/chiens`, formData, {
-          headers: {
-            // Multer only parses "multipart/form-data" requests
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          this.$router.push("/admin/refuges");
-        })
-        .catch(() => {
-          this.refuge = "Une erreur est survenue";
-          //console.log(this.refuge);
-        });
+
+      for (let i = 0; i < this.chiens.length; i++) {
+        if (this.chiens[i].nom == name) {
+          this.chien = "Ce chien existe déjà";
+        } else {
+          const formData = new FormData();
+          formData.set("refugeId", this.refugeId);
+          formData.set("refuge", this.refuge);
+          formData.set("name", name);
+          formData.set("puce", puce);
+          formData.set("sexe", sexe);
+          formData.set("age", age);
+          formData.set("taille", taille);
+          formData.set("chat", chat);
+          formData.set("statut", statut);
+          formData.set("picture", this.dataChien.picture);
+
+          configAxios
+            .post(`/chiens`, formData, {
+              headers: {
+                // Multer only parses "multipart/form-data" requests
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then(() => {
+              //location.replace("/admin/chiens/" + this.refugeId);
+              this.$router.push("/admin/chiens/" + this.refugeId);
+            })
+            .catch(() => {
+              this.refuge = "Une erreur est survenue";
+              //console.log(this.refuge);
+            });
+        }
+      }
     },
   },
 };
 </script>
-
 <style></style>

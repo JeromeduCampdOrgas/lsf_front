@@ -53,7 +53,7 @@
                   <span></span> Fermer
                 </button>
               </div>
-              <div>
+              <div class="erreur">
                 <span v-if="this.refuge == 'Ce refuge existe déjà'"
                   >Ce refuge existe déjà</span
                 >
@@ -102,6 +102,7 @@ export default {
             if (response.data.message == "Refuge successfully created") {
               this.refuge = "Le refuge a été créé avec succès";
               this.$router.push("/admin/refuges");
+              location.replace("/admin/refuges");
             } else {
               this.refuge = "Ce refuge existe déjà";
               return this.refuge;
@@ -117,4 +118,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.erreur {
+  margin-top: 10px;
+  color: red;
+  font-weight: bold;
+}
+</style>

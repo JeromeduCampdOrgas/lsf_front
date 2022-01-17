@@ -1,5 +1,4 @@
 <template>
-  <h1>utilisateur</h1>
   <div class="container-fluid vh-100" style="margin-top: 50px">
     <div class="" style="margin-top: 100px">
       <div class="rounded d-flex justify-content-center">
@@ -80,9 +79,6 @@
                 >
                   <span></span> Fermer
                 </button>
-                <button class="btn btn-danger" @click="getOneRefuge">
-                  trouver refuge
-                </button>
               </div>
             </form>
           </div>
@@ -119,7 +115,9 @@ export default {
           password: password,
           isAdmin: isAdmin,
         })
-        .then(() => console.log("C'est fait!!!"))
+        .then(() => {
+          console.log("C'est fait!!!");
+        })
         .catch((err) => err);
     },
   },

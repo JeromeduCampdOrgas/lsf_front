@@ -49,7 +49,7 @@
 </template>
 
 <script>
-//import configAxios from "../../../config/axios/configAxios";
+import configAxios from "../../../config/axios/configAxios";
 import store from "../../../store/index";
 export default {
   data() {
@@ -90,13 +90,17 @@ export default {
         }
       }
       store.dispatch("getSelectedRefuge", refuge);
-      /*configAxios.get(`chiens/${this.refugeId}`).then((response) => {
+      configAxios.get(`chiens/${this.refugeId}`).then((response) => {
         store.dispatch("getChiens", response.data);
-      });*/
+      });
       this.$router.push(`/admin/chiens/${this.refugeId}`);
     },
   },
-  beforeMount() {},
+  beforeMount() {
+    configAxios.get(`refuge`).then((response) => {
+      store.dispatch("getRefuges", response.data);
+    });
+  },
   updated() {
     this.$nextTick(function () {
       store.dispatch("getRefugeId", this.refugeId);
