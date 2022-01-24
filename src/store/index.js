@@ -21,6 +21,7 @@ const state = {
   refugeId: "",
   ///chiens
   chiens: "",
+  selectedDog: "",
 };
 
 /********* GETTERS ************************/
@@ -70,6 +71,9 @@ const getters = {
   getChiens: () => {
     return state.chiens;
   },
+  getSelectedDog: () => {
+    return state.selectedDog;
+  },
 };
 
 /********* MUTATIONS  ********************/
@@ -115,8 +119,12 @@ const mutations = {
   SET_REFUGE_ID: (state, refugeId) => {
     state.refugeId = refugeId;
   },
+  //Chiens
   SET_ALL_CHIENS: (state, chiens) => {
     state.chiens = chiens;
+  },
+  SET_SELECTED_DOG: (state, chien) => {
+    state.selectedDog = chien;
   },
 };
 
@@ -166,6 +174,9 @@ const actions = {
   //Chiens
   getChiens: ({ commit }, chiens) => {
     commit("SET_ALL_CHIENS", chiens);
+  },
+  getSelectedDog: ({ commit }, chien) => {
+    commit("SET_SELECTED_DOG", chien);
   },
 };
 

@@ -133,7 +133,6 @@
                   type="file"
                   name="carousel"
                   method="post"
-                  multiple
                   @change="onCarouselChange"
                 />
               </div>
@@ -142,9 +141,9 @@
                 class="d-flex flex-row justify-content-between col-12 mx-auto"
               >
                 <button
+                  @click="createChien"
                   class="btn btn-primary col-5 j"
                   type="button"
-                  @click="createChien"
                 >
                   <span></span> Valider
                 </button>
@@ -176,6 +175,7 @@ export default {
   data() {
     return {
       dataChien: {
+        refuge: null,
         name: null,
         puce: null,
         sexe: null,
@@ -184,6 +184,7 @@ export default {
         chat: null,
         statut: null,
         picture: null,
+        carousel: null,
       },
       carousel: [],
       refuge: store.state.refuge,
@@ -200,11 +201,7 @@ export default {
     onFileChange(event) {
       this.dataChien.picture = event.target.files[0];
     },
-    onCarouselChange(event) {
-      let image = event.target.files;
-      this.carousel = image;
-      console.log(this.carousel);
-    },
+
     createChien() {
       let name = this.dataChien.name;
       let puce = this.dataChien.puce;
@@ -213,7 +210,6 @@ export default {
       let taille = this.dataChien.taille;
       let chat = this.dataChien.chat;
       let statut = this.dataChien.statut;
-
       for (let i = 0; i < this.chiens.length; i++) {
         if (this.chiens[i].nom == name) {
           this.chien = "Ce chien existe déjà";

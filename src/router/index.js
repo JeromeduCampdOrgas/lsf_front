@@ -130,6 +130,15 @@ const routes = [
         /* webpackChunkName: "about" */ "../views/admin/chiens/createChienForm.vue"
       ),
   },
+  {
+    path: "/admin/chiens/edit",
+    name: "editChien",
+    beforeEnter: guardMyroute,
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../views/admin/chiens/editChien.vue"
+      ),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

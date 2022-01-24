@@ -17,7 +17,12 @@
           Some quick example text to build on the card title and make up the
           bulk of the card's content.
         </p>
-        <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+        <button @click="editChien" class="btn btn-warning col-5" type="button">
+          <span></span> Voir
+        </button>
+        <button class="btn btn-danger col-5" type="button">
+          <span></span> Supprimer
+        </button>
       </div>
     </div>
   </div>
@@ -32,11 +37,23 @@ export default {
       refuge: store.state.refuge,
       refugeId: store.state.refugeId,
       chiens: "",
+      selectedDog: "",
     };
   },
   methods: {
     newDog() {
       this.$router.push("/admin/chiens/create");
+    },
+    editChien(e) {
+      let selectedDog = e.target.parentNode.childNodes[0].innerHTML;
+      for (let i = 0; i < this.chiens.length; i++) {
+        if (this.chiens[i].nom === selectedDog) {
+          this.selectedDog = this.chiens[i];
+        }
+      }
+
+      store.dispatch("getSelectedDog", this.selectedDog);
+      this.$router.push("/admin/chiens/edit");
     },
   },
   beforeMount() {
