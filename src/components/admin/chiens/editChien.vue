@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid d-flex justify-content-between">
     <div class="gauche">
-      <h2>Modifications</h2>
+      <h2>CAROUSEL</h2>
       <div class="modif">
         <form action="">
           <h4>Carousel</h4>
@@ -18,32 +18,45 @@
                 @change="onCarouselChange"
               />
             </div>
-            <div v-if="visionneuse">
-              <div v-for="(image, index) in visionneuse" :key="image">
-                <img :src="image" />
-                <button @click="removeImage(index)">Remove image</button>
+            <!-- VISIONNEUSE -->
+
+            <div v-if="visionneuse" class="visionneuse">
+              <div
+                v-for="(image, index) in visionneuse"
+                :key="image"
+                class="image"
+              >
+                <div class="imgCarousel">
+                  <img :src="image" />
+                </div>
+                <div>
+                  <button
+                    class="btn btn-outline-danger"
+                    @click="removeImage(index)"
+                  >
+                    Remove image
+                  </button>
+                </div>
               </div>
             </div>
+
+            <!------------------------->
+            <div class="btnValidation">
+              <button
+                class="btn btn-success col-5 j"
+                type="submit"
+                @click="createCarousel"
+              >
+                <span></span> Valider
+              </button>
+            </div>
           </div>
-          <button
-            class="btn btn-success col-5 j"
-            type="submit"
-            @click="createCarousel"
-          >
-            <span></span> Valider
-          </button>
         </form>
-        <!--<div v-if="carousel">
-          <div v-for="(image, index) in this.carousel" :key="image.id">
-            <img :src="image" />
-            <button @click="removeImage(index)">Remove image</button>
-          </div>
-        </div>-->
       </div>
     </div>
     <div class="droite">
-      <h2>{{ chien.nom }}</h2>
       <div class="fiche">
+        <h2>{{ chien.nom }}</h2>
         <p>
           Puce : <span>{{ chien.puce }}</span>
         </p>
@@ -80,23 +93,14 @@ export default {
     return {
       chien: store.state.selectedDog,
       carousel: [],
-      donnees: [],
       refuge: store.state.refuge,
-      count: 0,
       visionneuse: [],
     };
   },
-  components: {
-    //CAROUSEL_CHIEN,
-  },
+  components: {},
   methods: {
     onCarouselChange(e) {
-      this.count = this.count + 1;
-      let files = e.target.files;
-      //console.log(e.target.files);
-      for (let i = 0; i < files.length; i++) {
-        this.carousel = files[i];
-      }
+      let files = Array.prototype.slice.call(e.target.files);
       this.carousel = files;
 
       this.createImage(files);
@@ -115,9 +119,8 @@ export default {
     },
     removeImage(i) {
       this.visionneuse.splice(i, 1);
+      this.carousel.splice(i, 1);
       console.log(this.carousel);
-      let tblo = Array.from(this.carousel);
-      console.log(tblo);
     },
     createCarousel() {
       const formData = new FormData();
@@ -144,15 +147,12 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.gauche,
+<style lang="scss" scoped>
 .droite {
-  width: 70%;
+  width: 30%;
   height: 500px;
-}
-.gauche {
   & .fiche {
-    width: 30%;
+    width: 90%;
     margin: 50px auto;
     padding: 15px;
     text-align: left;
@@ -174,23 +174,56 @@ export default {
     );
 
     box-shadow: 2px 2px #d8e1e3;
+
+    & h2 {
+      text-align: center;
+    }
     & p {
       font-size: 1.2rem;
     }
   }
 }
+.gauche {
+  width: 70%;
+}
 .modif {
-  width: 50%;
+  width: 90%;
   margin: 50px auto;
   padding: 15px;
   text-align: left;
   border-radius: 3%;
-  box-shadow: 2px 2px #d8e1e3;
+  box-shadow: 2px 2px 2px 2px #cbcff8;
+
+  & .visionneuse {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    text-align: center;
+
+    & .image {
+      width: 30%;
+      text-align: center;
+      border-radius: 3%;
+      box-shadow: 2px 2px 2px 2px #cbcff8;
+      margin-top: 30px;
+
+      & .imgCarousel {
+        width: 80%;
+        height: 100px;
+        margin: 30px auto 20px auto;
+        object-fit: cover;
+        & img {
+          height: 100%;
+        }
+      }
+    }
+  }
 }
-img {
-  width: 30%;
-  margin: auto;
-  display: block;
-  margin-bottom: 10px;
+.btn {
+  margin: 60px auto 30px auto;
+}
+.btnValidation {
+  text-align: center;
 }
 </style>
