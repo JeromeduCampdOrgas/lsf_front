@@ -8,7 +8,7 @@
           <div id="carousel">
             <div class="input-group mb-5">
               <span class="input-group-text bg-primary"
-                >image {{ this.count }}<i class="far fa-images"></i>
+                >image<i class="far fa-images"></i>
               </span>
               <input
                 name="carousel"
@@ -18,9 +18,12 @@
                 @change="onCarouselChange"
               />
             </div>
-            <!--<div>
-              <CAROUSEL_CHIEN />
-            </div>-->
+            <div v-if="visionneuse">
+              <div v-for="(image, index) in visionneuse" :key="image">
+                <img :src="image" />
+                <button @click="removeImage(index)">Remove image</button>
+              </div>
+            </div>
           </div>
           <button
             class="btn btn-success col-5 j"
@@ -80,30 +83,13 @@ export default {
       donnees: [],
       refuge: store.state.refuge,
       count: 0,
+      visionneuse: [],
     };
   },
   components: {
     //CAROUSEL_CHIEN,
   },
   methods: {
-    newImage() {
-      let newField = document.createElement("div");
-      //let newContent = document.createTextNode("Coucou");
-      let newSpan = document.createElement("span");
-      let newI = document.createElement("i");
-      let newSpanContent = document.createTextNode("image ");
-
-      newField.setAttribute("class", "input-group mb-5");
-      newSpan.setAttribute("class", "input-group-text bg-primary");
-      newI.setAttribute("class", "far fa-images");
-
-      newSpan.appendChild(newI);
-      newSpan.appendChild(newSpanContent);
-      newField.appendChild(newSpan);
-
-      let currentDiv = document.getElementById("carousel");
-      currentDiv.appendChild(newField);
-    },
     onCarouselChange(e) {
       this.count = this.count + 1;
       let files = e.target.files;
@@ -113,24 +99,27 @@ export default {
       }
       this.carousel = files;
 
-      //this.createImage(files);
+      this.createImage(files);
     },
     createImage(files) {
+      let vm = this;
       for (let index = 0; index < files.length; index++) {
-        let imageUrl = files[index].name;
-        this.carousel.push(imageUrl);
         let reader = new FileReader();
         reader.onload = function (event) {
           const imageUrl = event.target.result;
-          this.carousel.push(imageUrl);
+          vm.visionneuse.push(imageUrl);
         };
+
         reader.readAsDataURL(files[index]);
       }
-
-      //console.log(this.carousel);
+    },
+    removeImage(i) {
+      this.visionneuse.splice(i, 1);
+      console.log(this.carousel);
+      let tblo = Array.from(this.carousel);
+      console.log(tblo);
     },
     createCarousel() {
-      console.log(this.carousel.length);
       const formData = new FormData();
 
       formData.append("refuge", this.refuge);
