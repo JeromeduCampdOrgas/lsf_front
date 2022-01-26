@@ -51,10 +51,25 @@ export default {
           this.selectedDog = this.chiens[i];
         }
       }
-
       store.dispatch("getSelectedDog", this.selectedDog);
       this.$router.push("/admin/chiens/edit");
+      /*********************************** */
+      /*let chienId = store.state.selectedDog.id;
+      let refugeId = store.state.selectedDog.refugeId;
+
+      configAxios
+        .get(`/chiens/carousel/${chienId}`, {
+          where: {
+            refugeId: refugeId,
+            chienId: chienId,
+          },
+        })
+        .then((response) => {
+          store.dispatch("getChiensCarousel", response.data);
+          this.$router.push("/admin/chiens/edit");
+        });*/
     },
+    /************************************ */
   },
   beforeMount() {
     configAxios.get(`chiens/${this.refugeId}`).then((response) => {

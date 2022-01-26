@@ -22,6 +22,7 @@ const state = {
   ///chiens
   chiens: "",
   selectedDog: "",
+  chienCarousel: "",
 };
 
 /********* GETTERS ************************/
@@ -73,6 +74,9 @@ const getters = {
   },
   getSelectedDog: () => {
     return state.selectedDog;
+  },
+  getChienCarousel: () => {
+    return state.chienCarousel;
   },
 };
 
@@ -126,6 +130,9 @@ const mutations = {
   SET_SELECTED_DOG: (state, chien) => {
     state.selectedDog = chien;
   },
+  SET_CHIEN_CAROUSEL: (state, chiens) => {
+    state.chienCarousel = chiens;
+  },
 };
 
 /********* ACTIONS ***********************/
@@ -177,6 +184,9 @@ const actions = {
   },
   getSelectedDog: ({ commit }, chien) => {
     commit("SET_SELECTED_DOG", chien);
+  },
+  getChiensCarousel: ({ commit }, chiens) => {
+    commit("SET_CHIEN_CAROUSEL", chiens);
   },
 };
 
