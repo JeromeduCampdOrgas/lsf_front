@@ -1,7 +1,6 @@
 <template>
   <div class="container-fluid d-flex justify-content-between">
     <div class="gauche">
-      {{ this.existe }}
       <h2>CAROUSEL</h2>
       <div class="modif">
         <form action="">
@@ -19,20 +18,24 @@
                 @change="onCarouselChange"
               />
             </div>
+            <div class="btnValidation">
+              <button
+                v-if="this.existe == false && this.carousel.length > 0"
+                class="btn btn-success col-5 j"
+                type="submit"
+                @click="createCarousel"
+              >
+                <span></span> Valider
+              </button>
+              <button class="btn btn-danger col-5 j" @click="retour">
+                <span></span> Annuler
+              </button>
+            </div>
             <div v-if="this.existe == true" style="color: red">
               <span>
                 Certain(s) fichier(s) existe(nt) déjà dans le carousel</span
               >
             </div>
-            <!---------------------------------------------------->
-            <div v-if="visionneuse" class="visionneuse">
-              <div v-for="donnee in donnees" :key="donnee" class="image">
-                <div class="imgCarousel">
-                  <img :src="donnee" />
-                </div>
-              </div>
-            </div>
-            <!----------------------------------------------------->
 
             <!-- VISIONNEUSE -->
             <div v-if="visionneuse" class="visionneuse">
@@ -56,16 +59,16 @@
             </div>
 
             <!------------------------->
-            <div class="btnValidation">
-              <button
-                v-if="this.existe == false && this.carousel.length > 0"
-                class="btn btn-success col-5 j"
-                type="submit"
-                @click="createCarousel"
-              >
-                <span></span> Valider
-              </button>
+            <!---------------------------------------------------->
+
+            <div v-if="visionneuse" class="visionneuse">
+              <div v-for="donnee in donnees" :key="donnee" class="image">
+                <div class="imgCarousel">
+                  <img :src="donnee" />
+                </div>
+              </div>
             </div>
+            <!----------------------------------------------------->
           </div>
         </form>
       </div>
@@ -103,7 +106,7 @@
 <script>
 import store from "../../../store/index";
 import configAxios from "../../../config/axios/configAxios";
-//import CAROUSEL_CHIEN from "../../../components/admin/chiens/carouselChien.vue";
+
 export default {
   data() {
     return {
@@ -118,15 +121,20 @@ export default {
   },
   components: {},
   methods: {
+    retour() {
+      this.$router.push("/admin/chiens/edit");
+    },
     onCarouselChange(e) {
       let files = Array.prototype.slice.call(e.target.files);
       this.carousel = files;
-      for (let j = 0; j < this.$store.state.chienCarousel.length; j++) {
-        let chaine = this.$store.state.chienCarousel[j].images;
+
+      for (let j = 0; j < this.$store.state.chiensCarousel.length; j++) {
+        let chaine = this.$store.state.chiensCarousel[j].images;
         let longueur = chaine.indexOf(".JPG") - chaine.lastIndexOf("/") + 3;
         let storeName = chaine.substr(chaine.indexOf("IMG"), longueur);
         this.verifImages.push(storeName);
       }
+
       for (let i = 0; i < files.length; i++) {
         if (this.verifImages.find((el) => el == files[i].name)) {
           this.existe = true;
@@ -135,7 +143,6 @@ export default {
           this.existe = false;
         }
       }
-
       this.createImage(files);
       //
     },
@@ -154,9 +161,12 @@ export default {
       this.visionneuse.splice(i, 1);
       this.carousel.splice(i, 1);
     },
-    createCarousel() {
-      const formData = new FormData();
 
+    createCarousel() {
+      let chienId = store.state.selectedDog.id;
+      let refugeId = store.state.selectedDog.refugeId;
+
+      const formData = new FormData();
       formData.append("refuge", this.refuge);
       formData.append("nom", this.chien.nom);
       formData.append("chienId", this.chien.id);
@@ -164,33 +174,36 @@ export default {
       for (let i = 0; i < this.carousel.length; i++) {
         formData.append("carousel", this.carousel[i]);
       }
-      configAxios.post(`/chiens/carousel`, formData, {
-        headers: {
-          // Multer only parses "multipart/form-data" requests
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      let chienId = store.state.selectedDog.id;
-      let refugeId = store.state.selectedDog.refugeId;
-      console.log(chienId);
-
       configAxios
-        .get(`/chiens/carousel/${chienId}`, {
-          where: {
-            refugeId: refugeId,
-            chienId: chienId,
+        .post(`/chiens/carousel`, formData, {
+          headers: {
+            // Multer only parses "multipart/form-data" requests
+            "Content-Type": "multipart/form-data",
           },
         })
-        .then((response) => {
-          store.dispatch("getChiensCarousel", response.data);
-        })
         .then(() => {
-          for (let i = 0; i < this.$store.state.chienCarousel.length; i++) {
-            console.log(this.$store.state.chienCarousel[i].images);
-            this.donnees.push(this.$store.state.chienCarousel[i].images);
-          }
-          this.$router.push("/admin/chiens/edit");
+          configAxios
+            .get(`/chiens/carousel/${chienId}`, {
+              where: {
+                refugeId: refugeId,
+                chienId: chienId,
+              },
+            })
+            .then((response) => {
+              store.dispatch("getChiensCarousel", response.data).then(() => {
+                for (
+                  let i = 0;
+                  i < this.$store.state.chiensCarousel.length;
+                  i++
+                ) {
+                  //console.log(this.$store.state.chiensCarousel[i]);
+                  this.donnees.push(this.$store.state.chiensCarousel[i].images);
+                }
+                store.dispatch("getDonnees", this.donnees);
+              });
+
+              this.$router.push("/admin/chiens/edit");
+            });
         });
     },
   },
@@ -209,14 +222,10 @@ export default {
         store.dispatch("getChiensCarousel", response.data);
         this.$router.push("/admin/chiens/edit");
       });
-    for (let i = 0; i < this.$store.state.chienCarousel.length; i++) {
-      this.donnees.push(this.$store.state.chienCarousel[i].images);
+    for (let i = 0; i < this.$store.state.chiensCarousel.length; i++) {
+      this.donnees.push(this.$store.state.chiensCarousel[i].images);
     }
-  },
-  beforeUnmount() {
-    for (let i = 0; i < this.$store.state.chienCarousel.length; i++) {
-      this.donnees.push(this.$store.state.chienCarousel[i].images);
-    }
+    store.dispatch("getDonnees", this.donnees);
   },
 };
 </script>
@@ -294,10 +303,13 @@ export default {
     }
   }
 }
-.btn {
-  margin: 60px auto 30px auto;
-}
+
 .btnValidation {
   text-align: center;
+  display: flex;
+  & .btn {
+    margin: 60px auto 30px auto;
+    width: 30%;
+  }
 }
 </style>

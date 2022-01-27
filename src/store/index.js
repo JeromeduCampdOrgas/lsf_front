@@ -22,7 +22,9 @@ const state = {
   ///chiens
   chiens: "",
   selectedDog: "",
-  chienCarousel: "",
+  chiensCarousel: "",
+  imagesCarousel: "",
+  donnees: "",
 };
 
 /********* GETTERS ************************/
@@ -75,8 +77,14 @@ const getters = {
   getSelectedDog: () => {
     return state.selectedDog;
   },
-  getChienCarousel: () => {
-    return state.chienCarousel;
+  getChiensCarousel: () => {
+    return state.chiensCarousel;
+  },
+  getImagesCarousel: () => {
+    return state.imagesCarousel;
+  },
+  getDonneesCarousel: () => {
+    return state.donnees;
   },
 };
 
@@ -130,8 +138,14 @@ const mutations = {
   SET_SELECTED_DOG: (state, chien) => {
     state.selectedDog = chien;
   },
-  SET_CHIEN_CAROUSEL: (state, chiens) => {
-    state.chienCarousel = chiens;
+  SET_CHIENS_CAROUSEL: (state, chiens) => {
+    state.chiensCarousel = chiens;
+  },
+  SET_IMAGES_CAROUSEL: (state, images) => {
+    state.imagesCarousel = images;
+  },
+  SET_DONNEES_CAROUSEL: (state, images) => {
+    state.donnees = images;
   },
 };
 
@@ -186,7 +200,13 @@ const actions = {
     commit("SET_SELECTED_DOG", chien);
   },
   getChiensCarousel: ({ commit }, chiens) => {
-    commit("SET_CHIEN_CAROUSEL", chiens);
+    commit("SET_CHIENS_CAROUSEL", chiens);
+  },
+  getImagesCarousel: ({ commit }, images) => {
+    commit("SET_IMAGES_CAROUSEL", images);
+  },
+  getDonnees: ({ commit }, images) => {
+    commit("SET_DONNEES_CAROUSEL", images);
   },
 };
 
