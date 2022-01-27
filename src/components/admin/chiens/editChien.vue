@@ -200,9 +200,8 @@ export default {
                   this.donnees.push(this.$store.state.chiensCarousel[i].images);
                 }
                 store.dispatch("getDonnees", this.donnees);
+                this.$router.push("/admin/chiens/edit");
               });
-
-              this.$router.push("/admin/chiens/edit");
             });
         });
     },
@@ -220,12 +219,12 @@ export default {
       })
       .then((response) => {
         store.dispatch("getChiensCarousel", response.data);
-        this.$router.push("/admin/chiens/edit");
       });
     for (let i = 0; i < this.$store.state.chiensCarousel.length; i++) {
       this.donnees.push(this.$store.state.chiensCarousel[i].images);
     }
     store.dispatch("getDonnees", this.donnees);
+    this.$router.push("/admin/chiens/edit");
   },
 };
 </script>
@@ -233,10 +232,12 @@ export default {
 <style lang="scss" scoped>
 .droite {
   width: 30%;
-  height: 500px;
+  min-height: 400px;
   & .fiche {
     width: 90%;
-    margin: 50px auto;
+    height: 100%;
+
+    margin: auto;
     padding: 15px;
     text-align: left;
     border-radius: 3%;
