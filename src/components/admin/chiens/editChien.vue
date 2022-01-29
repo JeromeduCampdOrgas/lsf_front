@@ -2,6 +2,7 @@
   <div class="container-fluid d-flex justify-content-between">
     <div class="gauche">
       <h2>CAROUSEL</h2>
+
       <div class="modif">
         <form action="">
           <h4>Carousel</h4>
@@ -63,7 +64,8 @@
 
             <div v-if="visionneuse" class="visionneuse">
               <div v-for="donnee in donnees" :key="donnee" class="image">
-                <div class="imgCarousel">
+                <div class="suppr"><span @click="supprImage">X</span></div>
+                <div class="imgCarousel d-flex">
                   <img :src="donnee" />
                 </div>
               </div>
@@ -98,6 +100,9 @@
         <p>
           Statut: <span>{{ chien.statut }}</span>
         </p>
+        <div>
+          <button class="btn btn-success">modifier</button>
+        </div>
       </div>
     </div>
   </div>
@@ -117,6 +122,8 @@ export default {
       visionneuse: [],
       donnees: [],
       existe: false,
+      photoId: "",
+      imageToDelete: "",
     };
   },
   components: {},
@@ -161,7 +168,6 @@ export default {
       this.visionneuse.splice(i, 1);
       this.carousel.splice(i, 1);
     },
-
     createCarousel() {
       let chienId = store.state.selectedDog.id;
       let refugeId = store.state.selectedDog.refugeId;
@@ -196,13 +202,61 @@ export default {
                   i < this.$store.state.chiensCarousel.length;
                   i++
                 ) {
-                  //console.log(this.$store.state.chiensCarousel[i]);
+                  console.log(this.$store.state.chiensCarousel[i]);
                   this.donnees.push(this.$store.state.chiensCarousel[i].images);
                 }
-                store.dispatch("getDonnees", this.donnees);
-                this.$router.push("/admin/chiens/edit");
               });
+              store.dispatch("getDonnees", this.donnees);
             });
+        });
+      this.retour();
+      this.$router.push("/admin/chiens/edit");
+    },
+    supprImage(e) {
+      //console.log(this.donnees);
+      const photo =
+        e.target.parentNode.parentNode.childNodes[1].childNodes[0].src;
+      for (let i = 0; i < this.$store.state.chiensCarousel.length; i++) {
+        if (this.$store.state.chiensCarousel[i].images == photo) {
+          this.photoId = this.$store.state.chiensCarousel[i].id;
+          this.imageToDelete = this.$store.state.chiensCarousel[i].images;
+        }
+      }
+      configAxios
+        .delete(`/chiens/carousel/${this.photoId}`, {
+          images: this.imageToDelete,
+        })
+        .then(() => {
+          let chienId = store.state.selectedDog.id;
+          let refugeId = store.state.selectedDog.refugeId;
+          this.carousel = "";
+          this.donnees = [];
+          store.dispatch("getChiensCarousel", "");
+          store.dispatch("getDonnees", "");
+          store.dispatch("getDonnees", "").then(() => {
+            configAxios
+              .get(`/chiens/carousel/${chienId}`, {
+                where: {
+                  refugeId: refugeId,
+                  chienId: chienId,
+                },
+              })
+              .then((response) => {
+                store.dispatch("getChiensCarousel", response.data).then(() => {
+                  for (
+                    let i = 0;
+                    i < this.$store.state.chiensCarousel.length;
+                    i++
+                  ) {
+                    this.donnees.push(
+                      this.$store.state.chiensCarousel[i].images
+                    );
+                  }
+                  store.dispatch("getDonnees", this.donnees);
+                });
+              });
+            this.$router.push("/admin/chiens/edit");
+          });
         });
     },
   },
@@ -232,15 +286,14 @@ export default {
 <style lang="scss" scoped>
 .droite {
   width: 30%;
-  min-height: 400px;
+  height: 500px;
   & .fiche {
     width: 90%;
     height: 100%;
-
-    margin: auto;
+    margin: 85px auto;
     padding: 15px;
     text-align: left;
-    border-radius: 3%;
+    border-radius: 15px;
     background-image: linear-gradient(
       to right bottom,
       #aaafec,
@@ -271,13 +324,22 @@ export default {
   width: 70%;
 }
 .modif {
+  display: relative;
   width: 90%;
   margin: 50px auto;
   padding: 15px;
   text-align: left;
-  border-radius: 3%;
+  border-radius: 15px;
   box-shadow: 2px 2px 2px 2px #cbcff8;
-
+  & .suppr {
+    text-align: right;
+    margin-right: 10px;
+    color: red;
+    font-weight: bold;
+  }
+  & .suppr:hover {
+    cursor: pointer;
+  }
   & .visionneuse {
     display: flex;
     flex-direction: row;
