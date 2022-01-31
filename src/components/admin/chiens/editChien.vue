@@ -78,30 +78,95 @@
     <div class="droite">
       <div class="fiche">
         <h2>{{ chien.nom }}</h2>
-        <p>
-          Puce : <span>{{ chien.puce }}</span>
-        </p>
-        <p>
-          Sexe: <span>{{ chien.sexe }}</span>
-        </p>
-        <p>
-          Age: <span>{{ chien.age }}</span> ans
-        </p>
-        <p>
-          Taille: <span>{{ chien.taille }}</span>
-        </p>
+        <div class="item">
+          <div class="d-flex flex-direction-row justify-content-between">
+            <p>Puce :</p>
+            <p id="puce" class="active">
+              {{ this.fPuce }}
+            </p>
+            <input class="inactive" type="text" v-model="fPuce" />
+            <button class="btn btn-outline-primary" @click="modifFiche">
+              Modifier
+            </button>
+          </div>
+        </div>
+        <div class="item">
+          <div class="d-flex flex-direction-row justify-content-between">
+            <p>Sexe :</p>
+            <p id="sexe" class="active">
+              {{ this.fSexe }}
+            </p>
+            <input class="inactive" type="text" v-model="fSexe" />
+            <button class="btn btn-outline-primary" @click="modifFiche">
+              Modifier
+            </button>
+          </div>
+        </div>
+        <div class="item">
+          <div class="d-flex flex-direction-row justify-content-between">
+            <p>Age :</p>
+            <p id="age" class="active">
+              {{ this.fAge }}
+            </p>
+            <input class="inactive" type="text" v-model="fAge" />
+            <button class="btn btn-outline-primary" @click="modifFiche">
+              Modifier
+            </button>
+          </div>
+        </div>
+        <div class="item">
+          <div class="d-flex flex-direction-row justify-content-between">
+            <p>Taille :</p>
+            <p id="taille" class="active">
+              {{ this.fTaille }}
+            </p>
+            <input class="inactive" type="text" v-model="fTaille" />
+            <button class="btn btn-outline-primary" @click="modifFiche">
+              Modifier
+            </button>
+          </div>
+        </div>
+        <div class="item">
+          <div class="d-flex flex-direction-row justify-content-between">
+            <p>Test chats :</p>
+            <p id="chat" class="active">
+              {{ this.fChats }}
+            </p>
+            <input class="inactive" type="text" v-model="fChats" />
+            <button class="btn btn-outline-primary" @click="modifFiche">
+              Modifier
+            </button>
+          </div>
+        </div>
+        <div class="item">
+          <div class="d-flex flex-direction-row justify-content-between">
+            <p>Santé :</p>
+            <p id="sante" class="active">
+              {{ this.fSante }}
+            </p>
+            <input class="inactive" type="text" v-model="fSante" />
+            <button class="btn btn-outline-primary" @click="modifFiche">
+              Modifier
+            </button>
+          </div>
+        </div>
+        <div class="item">
+          <div class="d-flex flex-direction-row justify-content-between">
+            <p>Statut :</p>
+            <p id="statut" class="active">
+              {{ this.fStatut }}
+            </p>
+            <input class="inactive" type="text" v-model="fStatut" />
+            <button class="btn btn-outline-primary" @click="modifFiche">
+              Modifier
+            </button>
+          </div>
+        </div>
 
-        <p>
-          Test chats: <span>{{ chien.chats }}</span>
-        </p>
-        <p>
-          Santé: <span>{{ chien.sante }}</span>
-        </p>
-        <p>
-          Statut: <span>{{ chien.statut }}</span>
-        </p>
-        <div>
-          <button class="btn btn-success">modifier</button>
+        <div class="validation">
+          <button class="btn btn-success" @click="validModifications">
+            Valider les modifications
+          </button>
         </div>
       </div>
     </div>
@@ -124,10 +189,32 @@ export default {
       existe: false,
       photoId: "",
       imageToDelete: "",
+      /******Modifi Fiche */
+      fPuce: store.state.selectedDog.puce,
+      fSexe: store.state.selectedDog.sexe,
+      fAge: store.state.selectedDog.age,
+      fTaille: store.state.selectedDog.taille,
+      fChats: store.state.selectedDog.chats,
+      fSante: store.state.selectedDog.sante,
+      fStatut: store.state.selectedDog.statut,
+      modif: "",
     };
   },
   components: {},
   methods: {
+    modifFiche(e) {
+      let selection =
+        e.target.parentNode.parentNode.childNodes[0].childNodes[1];
+      let modification =
+        e.target.parentNode.parentNode.childNodes[0].childNodes[2];
+      selection.classList.remove("active");
+      selection.classList.add("inactive");
+      modification.classList.remove("inactive");
+      modification.classList.add("active");
+    },
+    validModifications() {
+      console.log("coucou");
+    },
     retour() {
       this.$router.push("/admin/chiens/edit");
     },
@@ -285,8 +372,8 @@ export default {
 
 <style lang="scss" scoped>
 .droite {
-  width: 30%;
-  height: 500px;
+  width: 40%;
+  height: 650px;
   & .fiche {
     width: 90%;
     height: 100%;
@@ -318,10 +405,28 @@ export default {
     & p {
       font-size: 1.2rem;
     }
+    .validation {
+      margin-top: 50px;
+      text-align: center;
+    }
+    .item {
+      border-radius: 15px;
+      box-shadow: 2px 2px #d8e1e3;
+      padding: 2px 5px;
+      margin: 20px 5px;
+    }
+    .active {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .inactive {
+      display: none;
+    }
   }
 }
 .gauche {
-  width: 70%;
+  width: 60%;
 }
 .modif {
   display: relative;
