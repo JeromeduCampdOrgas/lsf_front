@@ -97,6 +97,7 @@
               {{ this.fSexe }}
             </p>
             <input class="inactive" type="text" v-model="fSexe" />
+
             <button class="btn btn-outline-primary" @click="modifFiche">
               Modifier
             </button>
@@ -189,7 +190,7 @@ export default {
       existe: false,
       photoId: "",
       imageToDelete: "",
-      /******Modifi Fiche */
+      /******Modif Fiche */
       fPuce: store.state.selectedDog.puce,
       fSexe: store.state.selectedDog.sexe,
       fAge: store.state.selectedDog.age,
@@ -197,7 +198,19 @@ export default {
       fChats: store.state.selectedDog.chats,
       fSante: store.state.selectedDog.sante,
       fStatut: store.state.selectedDog.statut,
-      modif: "",
+      modif: {
+        age: "",
+        chats: "",
+        id: store.state.selectedDog.id,
+        imageUrl: store.state.selectedDog.imageUrl,
+        nom: store.state.selectedDog.nom,
+        puce: "",
+        refugeId: store.state.selectedDog.refugeId,
+        sante: "",
+        sexe: "",
+        statut: "",
+        taille: "",
+      },
     };
   },
   components: {},
@@ -213,7 +226,41 @@ export default {
       modification.classList.add("active");
     },
     validModifications() {
-      console.log("coucou");
+      let puce = this.fPuce;
+      let sexe = this.fSexe;
+      let age = this.fAge;
+      let taille = this.fTaille;
+      let sante = this.fSante;
+      let statut = this.fStatut;
+      let chat = this.fChats;
+      this.modif.puce = puce;
+      this.modif.sexe = sexe;
+      this.modif.age = age;
+      this.modif.taille = taille;
+      this.modif.sante = sante;
+      this.modif.statut = statut;
+      this.modif.chat = chat;
+      store.dispatch("getSelectedDog", this.modif);
+      configAxios.put(`/chiens/${this.chien.id}`, {
+        puce: puce,
+        sexe: sexe,
+        age: age,
+        taille: taille,
+        sante: sante,
+        statut: statut,
+        chats: chat,
+      });
+      const p = document.getElementsByTagName("p");
+      const input = document.getElementsByTagName("input");
+      for (let elem of p) {
+        elem.classList.remove("inactive");
+        elem.classList.add("active");
+      }
+      for (let elem of input) {
+        elem.classList.remove("active");
+        elem.classList.add("inactive");
+      }
+      this.$router.push("/admin/chiens/edit");
     },
     retour() {
       this.$router.push("/admin/chiens/edit");
