@@ -45,6 +45,7 @@ export default {
       this.$router.push("/admin/chiens/create");
     },
     editChien(e) {
+      store.dispatch("getChiensCarousel", "");
       let selectedDog = e.target.parentNode.childNodes[0].innerHTML;
       for (let i = 0; i < this.chiens.length; i++) {
         if (this.chiens[i].nom === selectedDog) {
@@ -54,7 +55,7 @@ export default {
       store.dispatch("getSelectedDog", this.selectedDog);
       this.$router.push("/admin/chiens/edit");
       /*********************************** */
-      /*let chienId = store.state.selectedDog.id;
+      let chienId = store.state.selectedDog.id;
       let refugeId = store.state.selectedDog.refugeId;
 
       configAxios
@@ -66,8 +67,8 @@ export default {
         })
         .then((response) => {
           store.dispatch("getChiensCarousel", response.data);
-          this.$router.push("/admin/chiens/edit");
-        });*/
+          location.replace("/admin/chiens/edit");
+        });
     },
     /************************************ */
   },

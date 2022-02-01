@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import configAxios from "../../../config/axios/configAxios";
-import store from "../../../store/index";
+import configAxios from "../../config/axios/configAxios";
+import store from "../../store/index";
 export default {
   data() {
     return {
@@ -27,13 +27,10 @@ export default {
     };
   },
   methods: {
-    createRefuge() {
-      this.$router.push("/admin/refuges/create");
-    },
     selectedRefuge(e) {
       let selectedRefuge = e.target.parentNode.childNodes[0].alt;
       store.dispatch("getSelectedRefuge", selectedRefuge);
-      this.$router.push("/admin/refuges/" + selectedRefuge);
+      this.$router.push("/refuges/" + selectedRefuge);
     },
   },
   beforeMount() {

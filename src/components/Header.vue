@@ -21,13 +21,15 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <router-link to="/" class="nav-link active" aria-current="page"
-                >Home</router-link
+                >Accueil</router-link
               >
             </li>
             <administration v-if="store.state.isAdmin === 'isAdmin'" />
 
             <li v-if="store.state.isAdmin === 'isAdmin'" class="nav-item">
-              <router-link to="/about" class="nav-link">About</router-link>
+              <router-link to="/refuges" class="nav-link"
+                >Les refuges</router-link
+              >
             </li>
             <li class="nav-item dropdown">
               <a

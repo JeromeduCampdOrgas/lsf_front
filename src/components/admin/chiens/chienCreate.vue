@@ -121,22 +121,7 @@
                 />
               </div>
               <!-------------------- Image ---------------------------->
-              <!-------------------------- Carousel ------------------------->
-              <h4>Carousel</h4>
-              <div class="input-group mb-5">
-                <span class="input-group-text bg-primary"
-                  ><i class="far fa-images"></i
-                ></span>
-                <input
-                  class="form-control"
-                  id="carousel"
-                  type="file"
-                  name="carousel"
-                  method="post"
-                  @change="onCarouselChange"
-                />
-              </div>
-              <!-------------------- Carousel ---------------------------->
+
               <div
                 class="d-flex flex-row justify-content-between col-12 mx-auto"
               >
@@ -200,9 +185,10 @@ export default {
     },
     onFileChange(event) {
       this.dataChien.picture = event.target.files[0];
+      console.log(this.dataChien.picture);
     },
-
     createChien() {
+      console.log("Hello new dog");
       let name = this.dataChien.name;
       let puce = this.dataChien.puce;
       let sexe = this.dataChien.sexe;
@@ -210,9 +196,11 @@ export default {
       let taille = this.dataChien.taille;
       let chat = this.dataChien.chat;
       let statut = this.dataChien.statut;
+
       for (let i = 0; i < this.chiens.length; i++) {
         if (this.chiens[i].nom == name) {
           this.chien = "Ce chien existe déjà";
+          console.log(this.chien);
         } else {
           const formData = new FormData();
           formData.set("refugeId", this.refugeId);
@@ -225,7 +213,7 @@ export default {
           formData.set("chat", chat);
           formData.set("statut", statut);
           formData.set("picture", this.dataChien.picture);
-
+          console.log(this.dataChien.picture);
           configAxios
             .post(`/chiens`, formData, {
               headers: {
@@ -234,12 +222,15 @@ export default {
               },
             })
             .then(() => {
-              //location.replace("/admin/chiens/" + this.refugeId);
+              configAxios.get(`chiens/${this.refugeId}`).then((response) => {
+                store.dispatch("getChiens", response.data);
+                this.chiens = store.state.chiens;
+              });
               this.$router.push("/admin/chiens/" + this.refugeId);
             })
             .catch(() => {
               this.refuge = "Une erreur est survenue";
-              //console.log(this.refuge);
+              console.log(this.refuge);
             });
         }
       }

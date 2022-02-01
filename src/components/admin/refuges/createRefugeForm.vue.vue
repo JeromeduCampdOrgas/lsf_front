@@ -68,7 +68,7 @@
 
 <script>
 import configAxios from "../../../config/axios/configAxios";
-//import store from "../../../store/index";
+import store from "../../../store/index";
 export default {
   data() {
     return {
@@ -101,7 +101,10 @@ export default {
           if (response !== null) {
             if (response.data.message == "Refuge successfully created") {
               this.refuge = "Le refuge a été créé avec succès";
-              this.$router.push("/admin/refuges");
+              configAxios.get(`refuge`).then((response) => {
+                store.dispatch("getRefuges", response.data);
+              });
+              //this.$router.push("/admin/refuges");
               location.replace("/admin/refuges");
             } else {
               this.refuge = "Ce refuge existe déjà";

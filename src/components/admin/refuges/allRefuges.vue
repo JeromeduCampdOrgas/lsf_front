@@ -32,7 +32,7 @@
             <button
               type="button"
               class="btn btn-outline-danger"
-              @click="deleteUser"
+              @click="deleteRefuge"
             >
               Supprimer
             </button>
@@ -51,6 +51,7 @@
 <script>
 import configAxios from "../../../config/axios/configAxios";
 import store from "../../../store/index";
+
 export default {
   data() {
     return {
@@ -75,9 +76,26 @@ export default {
           store.dispatch("getRefugeId", this.refuges[i].id);
         }
       }
+
       store.dispatch("getSelectedRefuge", selectedRefuge);
       store.dispatch("getModif", true);
       this.$router.push("/admin/refuges/update");
+    },
+    deleteRefuge(e) {
+      let selectedRefuge =
+        e.target.parentNode.parentNode.childNodes[1].innerHTML;
+      for (let i = 0; i < this.refuges.length; i++) {
+        if (this.refuges[i].name == selectedRefuge) {
+          //let refugeId=this.refuges[i].id
+          store.dispatch("getRefugeId", this.refuges[i].id);
+        }
+      }
+      let refugeId = this.$store.state.refugeId;
+      configAxios.delete(`/refuge/${refugeId}`);
+      configAxios.get(`refuge`).then((response) => {
+        store.dispatch("getRefuges", response.data);
+      });
+      this.$router.push("/admin/refuges");
     },
     //routes vers les chiens
     chiens(e) {

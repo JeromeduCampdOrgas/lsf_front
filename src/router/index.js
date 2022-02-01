@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
+import Accueil from "../views/Home.vue";
 import store from "../store/index";
 function guardMyroute(to, from, next) {
   let isAuthenticated = false;
@@ -20,17 +20,6 @@ function guardMyroute(to, from, next) {
   }
 }
 const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
-  },
   // Users routes
   {
     path: "/user",
@@ -137,6 +126,25 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "about" */ "../views/admin/chiens/editChien.vue"
+      ),
+  },
+  /********Routes Visiteurs */
+  {
+    path: "/",
+    name: "Accueil",
+    component: Accueil,
+  },
+  {
+    path: "/refuges",
+    name: "Refuges",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/allRefuges.vue"),
+  },
+  {
+    path: "/refuges/:refuge",
+    component: () =>
+      import(
+        /* webpackChunkName: "login" */ "../components/visiteur/chiensRefuge.vue"
       ),
   },
 ];
