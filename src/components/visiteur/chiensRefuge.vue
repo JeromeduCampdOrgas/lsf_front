@@ -2,37 +2,34 @@
   <div
     class="container-fluid d-flex flex-direction-row justify-content-between"
   >
-    <div class="gauche col-8">
+    <div class="gauche col-10">
       <div class="entete d-flex flex-direction-row justify-content-around">
         <h1>{{ this.refuge }}</h1>
 
         <div class="entete-img">
           <img :src="this.refugeImg" :alt="this.refuge" />
         </div>
-        <div
-          class="d-flex flex-direction-row justify-content-around flex-wrap mb-10"
-        >
-          <div
-            v-for="chien in this.chiens"
-            :key="chien.id"
-            class="card"
-            style="width: 18rem"
-          >
+      </div>
+      <div
+        class="d-flex flex-direction-row justify-content-around flex-wrap mb-8"
+      >
+        <div v-for="chien in this.chiens" :key="chien.id" class="card">
+          <div class="card-img">
             <img :src="chien.imageUrl" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">{{ chien.nom }}</h5>
-              <p class="card-text">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <button
-                @click="editChien"
-                class="btn btn-warning col-5"
-                type="button"
-              >
-                <span></span> Voir
-              </button>
-            </div>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ chien.nom }}</h5>
+            <!--<p class="card-text">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>-->
+            <button
+              @click="editChien"
+              class="btn btn-warning col-5"
+              type="button"
+            >
+              Voir
+            </button>
           </div>
         </div>
       </div>
@@ -70,8 +67,9 @@ export default {
     };
   },
   methods: {
-    createChien() {
-      this.$router.push("/admin/chiens/create");
+    editChien(e) {
+      let chien = e.target.parentNode.childNodes[0].innerHTML;
+      this.$router.push("/refuges/" + this.refuge + "/" + chien);
     },
   },
   beforeMount() {
@@ -92,12 +90,26 @@ export default {
 <style lang="scss" scoped>
 .gauche {
   & .entete {
+    margin-bottom: 30px;
     & .entete-img {
       width: 50px;
       height: 50px;
       object-fit: cover;
       & img {
         height: 100%;
+      }
+    }
+  }
+  .card {
+    height: 350px;
+    margin: 25px 20px;
+    width: 25%;
+
+    & .card-img {
+      height: 70%;
+      object-fit: cover;
+      & img {
+        max-height: 100%;
       }
     }
   }

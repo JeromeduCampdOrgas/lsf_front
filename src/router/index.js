@@ -147,6 +147,13 @@ const routes = [
         /* webpackChunkName: "login" */ "../components/visiteur/chiensRefuge.vue"
       ),
   },
+  {
+    path: "/refuges/:refuge/:chien",
+    component: () =>
+      import(
+        /* webpackChunkName: "login" */ "../components/visiteur/editChien.vue"
+      ),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
