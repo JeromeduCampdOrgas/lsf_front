@@ -5,8 +5,35 @@
     <div class="gauche col-8">
       <div class="entete d-flex flex-direction-row justify-content-around">
         <h1>{{ this.refuge }}</h1>
+
         <div class="entete-img">
           <img :src="this.refugeImg" :alt="this.refuge" />
+        </div>
+        <div
+          class="d-flex flex-direction-row justify-content-around flex-wrap mb-10"
+        >
+          <div
+            v-for="chien in this.chiens"
+            :key="chien.id"
+            class="card"
+            style="width: 18rem"
+          >
+            <img :src="chien.imageUrl" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title">{{ chien.nom }}</h5>
+              <p class="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+              </p>
+              <button
+                @click="editChien"
+                class="btn btn-warning col-5"
+                type="button"
+              >
+                <span></span> Voir
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -31,12 +58,15 @@
 
 <script>
 import store from "../../store/index";
+import configAxios from "../../config/axios/configAxios";
 export default {
   data() {
     return {
       refuge: store.state.refuge,
+      refugeId: store.state.refugeId,
       refuges: store.state.refuges,
       refugeImg: "",
+      chiens: "",
     };
   },
   methods: {
@@ -50,6 +80,11 @@ export default {
         this.refugeImg = this.refuges[i].imageUrl;
       }
     }
+    configAxios.get(`chiens/${this.refugeId}`).then((response) => {
+      store.dispatch("getChiens", response.data);
+
+      this.chiens = store.state.chiens;
+    });
   },
 };
 </script>

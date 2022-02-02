@@ -24,18 +24,26 @@ export default {
   data() {
     return {
       refuges: "",
+      refugeId: "",
     };
   },
   methods: {
     selectedRefuge(e) {
       let selectedRefuge = e.target.parentNode.childNodes[0].alt;
       store.dispatch("getSelectedRefuge", selectedRefuge);
+      for (let i = 0; i < this.refuges.length; i++) {
+        if (this.refuges[i].name == selectedRefuge) {
+          this.refugeId = this.refuges[i].id;
+          store.dispatch("getRefugeId", this.refuges[i].id);
+        }
+      }
       this.$router.push("/refuges/" + selectedRefuge);
     },
   },
   beforeMount() {
     configAxios.get(`refuge`).then((response) => {
       this.refuges = response.data;
+
       store.dispatch("getRefuges", this.refuges);
       store.dispatch("getSelectedRefuge", "");
     });
