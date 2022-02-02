@@ -187,6 +187,7 @@ export default {
       this.dataChien.picture = event.target.files[0];
     },
     createChien() {
+      console.log(this.chiens.length);
       let name = this.dataChien.name;
       let puce = this.dataChien.puce;
       let sexe = this.dataChien.sexe;
@@ -199,6 +200,37 @@ export default {
         for (let i = 0; i < this.chiens.length; i++) {
           if (this.chiens[i].nom == name) {
             this.chien = "Ce chien existe déjà";
+          } else {
+            const formData = new FormData();
+            formData.set("refugeId", this.refugeId);
+            formData.set("refuge", this.refuge);
+            formData.set("name", name);
+            formData.set("puce", puce);
+            formData.set("sexe", sexe);
+            formData.set("age", age);
+            formData.set("taille", taille);
+            formData.set("chat", chat);
+            formData.set("statut", statut);
+            formData.set("picture", this.dataChien.picture);
+
+            configAxios
+              .post(`/chiens`, formData, {
+                headers: {
+                  // Multer only parses "multipart/form-data" requests
+                  "Content-Type": "multipart/form-data",
+                },
+              })
+              .then(() => {
+                configAxios.get(`chiens/${this.refugeId}`).then((response) => {
+                  store.dispatch("getChiens", response.data);
+                  this.chiens = store.state.chiens;
+                });
+                this.$router.push("/admin/chiens/" + this.refugeId);
+              })
+              .catch(() => {
+                this.refuge = "Une erreur est survenue";
+                console.log(this.refuge);
+              });
           }
         }
       } else {

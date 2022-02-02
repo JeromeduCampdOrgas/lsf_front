@@ -43,7 +43,6 @@ export default {
   beforeMount() {
     configAxios.get(`refuge`).then((response) => {
       this.refuges = response.data;
-
       store.dispatch("getRefuges", this.refuges);
       store.dispatch("getSelectedRefuge", "");
     });
