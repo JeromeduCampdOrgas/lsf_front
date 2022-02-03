@@ -26,7 +26,7 @@
             </li>
             <administration v-if="store.state.isAdmin === 'isAdmin'" />
 
-            <li v-if="store.state.isAdmin === 'isAdmin'" class="nav-item">
+            <li class="nav-item">
               <router-link to="/refuges" class="nav-link"
                 >Les refuges</router-link
               >

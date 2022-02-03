@@ -63,13 +63,33 @@ export default {
       refugeId: store.state.refugeId,
       refuges: store.state.refuges,
       refugeImg: "",
-      chiens: "",
+      chiens: store.state.chiens,
+      selectedDog: "",
     };
   },
   methods: {
     editChien(e) {
+      store.dispatch("getChiensCarousel", "");
       let chien = e.target.parentNode.childNodes[0].innerHTML;
-      this.$router.push("/refuges/" + this.refuge + "/" + chien);
+      for (let i = 0; i < this.chiens.length; i++) {
+        if (this.chiens[i].nom === chien) {
+          this.selectedDog = this.chiens[i];
+          store.dispatch("getSelectedDog", this.chiens[i]);
+        }
+      }
+
+      configAxios
+        .get(`/chiens/carousel/${this.selectedDog.id}`)
+        .then((response) => {
+          console.log(response.data.length);
+          if (response.data.length > 0) {
+            store.dispatch("getChiensCarousel", response.data);
+            this.$router.push("/refuges/" + this.refuge + "/" + chien);
+          } else {
+            this.$router.push("/refuges/" + this.refuge + "/" + chien);
+            console.log("Pas de carousel for this dog");
+          }
+        });
     },
   },
   beforeMount() {
