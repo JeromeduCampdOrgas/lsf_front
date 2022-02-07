@@ -81,89 +81,108 @@
         <div class="item">
           <div class="d-flex flex-direction-row justify-content-between">
             <p>Puce :</p>
-            <p id="puce" class="active">
+            <p id="puce" class="active" @click="modifFiche">
               {{ this.fPuce }}
             </p>
             <input class="inactive" type="text" v-model="fPuce" />
-            <button class="btn btn-outline-primary" @click="modifFiche">
+            <!--<button class="btn btn-outline-primary" @click="modifFiche">
               Modifier
-            </button>
+            </button>-->
           </div>
         </div>
         <div class="item">
           <div class="d-flex flex-direction-row justify-content-between">
             <p>Sexe :</p>
-            <p id="sexe" class="active">
+            <p id="sexe" class="active" @click="modifFiche">
               {{ this.fSexe }}
             </p>
             <input class="inactive" type="text" v-model="fSexe" />
 
-            <button class="btn btn-outline-primary" @click="modifFiche">
+            <!--<button class="btn btn-outline-primary" @click="modifFiche">
               Modifier
-            </button>
+            </button>-->
           </div>
         </div>
         <div class="item">
           <div class="d-flex flex-direction-row justify-content-between">
             <p>Age :</p>
-            <p id="age" class="active">
+            <p id="age" class="active" @click="modifFiche">
               {{ this.fAge }}
             </p>
             <input class="inactive" type="text" v-model="fAge" />
-            <button class="btn btn-outline-primary" @click="modifFiche">
+            <!--<button class="btn btn-outline-primary" @click="modifFiche">
               Modifier
-            </button>
+            </button>-->
           </div>
         </div>
         <div class="item">
           <div class="d-flex flex-direction-row justify-content-between">
             <p>Taille :</p>
-            <p id="taille" class="active">
+            <p id="taille" class="active" @click="modifFiche">
               {{ this.fTaille }}
             </p>
             <input class="inactive" type="text" v-model="fTaille" />
-            <button class="btn btn-outline-primary" @click="modifFiche">
+            <!--<button class="btn btn-outline-primary" @click="modifFiche">
               Modifier
-            </button>
+            </button>-->
           </div>
         </div>
         <div class="item">
           <div class="d-flex flex-direction-row justify-content-between">
             <p>Test chats :</p>
-            <p id="chat" class="active">
+            <p id="chat" class="active" @click="modifFiche">
               {{ this.fChats }}
             </p>
             <input class="inactive" type="text" v-model="fChats" />
-            <button class="btn btn-outline-primary" @click="modifFiche">
+            <!--<button class="btn btn-outline-primary" @click="modifFiche">
               Modifier
-            </button>
+            </button>-->
           </div>
         </div>
         <div class="item">
           <div class="d-flex flex-direction-row justify-content-between">
             <p>Santé :</p>
-            <p id="sante" class="active">
+            <p id="sante" class="active" @click="modifFiche">
               {{ this.fSante }}
             </p>
             <input class="inactive" type="text" v-model="fSante" />
-            <button class="btn btn-outline-primary" @click="modifFiche">
+            <!--<button class="btn btn-outline-primary" @click="modifFiche">
               Modifier
-            </button>
+            </button>-->
           </div>
         </div>
         <div class="item">
           <div class="d-flex flex-direction-row justify-content-between">
             <p>Statut :</p>
-            <p id="statut" class="active">
+            <p id="statut" class="active" @click="modifFiche">
               {{ this.fStatut }}
             </p>
             <input class="inactive" type="text" v-model="fStatut" />
-            <button class="btn btn-outline-primary" @click="modifFiche">
+            <!--<button class="btn btn-outline-primary" @click="modifFiche">
               Modifier
-            </button>
+            </button>-->
           </div>
         </div>
-
+        <!----------------------------------->
+        <div class="item">
+          <div class="d-flex flex-direction-row justify-content-between">
+            <p>Texte :</p>
+            <p id="texte" class="active" @click="modifFiche">
+              {{ this.fCommentaires }}
+            </p>
+            <textarea
+              rows="10"
+              cols="35"
+              class="inactive"
+              type="text"
+              v-model="fCommentaires"
+            ></textarea>
+            <!--<button class="btn btn-outline-primary" @click="modifFiche">
+              Modifier
+            </button>-->
+          </div>
+        </div>
+        <!----------------------------------->
         <div class="validation">
           <button class="btn btn-success" @click="validModifications">
             Valider les modifications
@@ -198,6 +217,7 @@ export default {
       fChats: store.state.selectedDog.chats,
       fSante: store.state.selectedDog.sante,
       fStatut: store.state.selectedDog.statut,
+      fCommentaires: store.state.selectedDog.commentaires,
       modif: {
         age: "",
         chats: "",
@@ -210,6 +230,7 @@ export default {
         sexe: "",
         statut: "",
         taille: "",
+        commentaires: "",
       },
     };
   },
@@ -233,6 +254,8 @@ export default {
       let sante = this.fSante;
       let statut = this.fStatut;
       let chat = this.fChats;
+      let commentaires = this.fCommentaires;
+
       this.modif.puce = puce;
       this.modif.sexe = sexe;
       this.modif.age = age;
@@ -240,26 +263,36 @@ export default {
       this.modif.sante = sante;
       this.modif.statut = statut;
       this.modif.chat = chat;
+      this.modif.commentaires = this.fCommentaires;
       store.dispatch("getSelectedDog", this.modif);
-      configAxios.put(`/chiens/${this.chien.id}`, {
-        puce: puce,
-        sexe: sexe,
-        age: age,
-        taille: taille,
-        sante: sante,
-        statut: statut,
-        chats: chat,
-      });
-      const p = document.getElementsByTagName("p");
-      const input = document.getElementsByTagName("input");
-      for (let elem of p) {
-        elem.classList.remove("inactive");
-        elem.classList.add("active");
-      }
-      for (let elem of input) {
-        elem.classList.remove("active");
-        elem.classList.add("inactive");
-      }
+      configAxios
+        .put(`/chiens/${this.chien.id}`, {
+          puce: puce,
+          sexe: sexe,
+          age: age,
+          taille: taille,
+          sante: sante,
+          statut: statut,
+          chats: chat,
+          commentaires: commentaires,
+        })
+        .then(() => {
+          const p = document.getElementsByTagName("p");
+          const input = document.getElementsByTagName("input");
+          const textArea = document.getElementsByTagName("textArea");
+          for (let elem of p) {
+            elem.classList.remove("inactive");
+            elem.classList.add("active");
+          }
+          for (let elem of input) {
+            elem.classList.remove("active");
+            elem.classList.add("inactive");
+          }
+          for (let elem of textArea) {
+            elem.classList.remove("active");
+            elem.classList.add("inactive");
+          }
+        });
       this.$router.push("/admin/chiens/edit");
     },
     retour() {
@@ -420,7 +453,7 @@ export default {
 <style lang="scss" scoped>
 .droite {
   width: 40%;
-  height: 650px;
+  //height: 650px;
   & .fiche {
     width: 90%;
     height: 100%;
@@ -428,6 +461,7 @@ export default {
     padding: 15px;
     text-align: left;
     border-radius: 15px;
+    resize: vertical;
     background-image: linear-gradient(
       to right bottom,
       #aaafec,
@@ -456,11 +490,19 @@ export default {
       margin-top: 50px;
       text-align: center;
     }
+
     .item {
       border-radius: 15px;
       box-shadow: 2px 2px #d8e1e3;
       padding: 2px 5px;
       margin: 20px 5px;
+      height: auto;
+
+      & #texte {
+        max-width: 80%;
+
+        background: grey;
+      }
     }
     .active {
       display: flex;

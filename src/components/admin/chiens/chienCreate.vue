@@ -105,6 +105,13 @@
                   <option value="encours">En cours</option>
                 </select>
               </div>
+              <div class="form-floating">
+                <textarea
+                  class="form-control"
+                  placeholder="Leave a comment here"
+                  id="floatingTextarea"
+                ></textarea>
+              </div>
               <!-------------------------- Image ------------------------->
               <h4>Photo principale</h4>
               <div class="input-group mb-3">
