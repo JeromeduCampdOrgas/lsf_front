@@ -25,7 +25,7 @@
         <img
           :src="this.carousel[this.count].images"
           alt=""
-          @click="showModal = true"
+          @click="$refs.modalName.openModal()"
         />
       </div>
       <div class="compteur">
@@ -35,7 +35,9 @@
       </div>
     </div>
   </div>
-  <Modal v-show="showModal" @close-modal="showModal = false" />
+  <Modal ref="modalName">
+    <template v-slot:body> </template>
+  </Modal>
 </template>
 
 <script>
@@ -50,7 +52,6 @@ export default {
       carousel: store.state.chiensCarousel,
       selectedDog: store.state.selectedDog,
       count: 0,
-      showModal: false,
     };
   },
 

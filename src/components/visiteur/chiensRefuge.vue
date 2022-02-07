@@ -69,6 +69,7 @@ export default {
   },
   methods: {
     editChien(e) {
+      store.dispatch("getShowModal", false);
       store.dispatch("getChiensCarousel", "");
       let chien = e.target.parentNode.childNodes[0].innerHTML;
       for (let i = 0; i < this.chiens.length; i++) {

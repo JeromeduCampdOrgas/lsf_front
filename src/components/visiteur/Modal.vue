@@ -1,8 +1,8 @@
 <template>
-  <div class="bloc-modale">
+  <div class="bloc-modale" v-if="showModal">
     <div @click="toggleModale" class="overlay"></div>
     <div class="modale card">
-      <div @click="toggleModale" class="btn-modale btn btn-danger">X</div>
+      <div @click="closeModal" class="btn-modale btn btn-danger">X</div>
       <div
         v-if="this.carousel.length > 0"
         class="droite d-flex flex-direction-row justify-content-around"
@@ -37,9 +37,17 @@ export default {
       carousel: store.state.chiensCarousel,
       selectedDog: store.state.selectedDog,
       count: 0,
+      showModal: false,
     };
   },
+
   methods: {
+    closeModal() {
+      this.showModal = false;
+    },
+    openModal() {
+      this.showModal = true;
+    },
     compteurPlus() {
       if (this.count + 2 > this.carousel.length) {
         this.count = 0;
@@ -83,12 +91,13 @@ export default {
   color: #333;
   padding: 50px;
   position: fixed;
-  width: 95%;
-  height: 95%;
+  width: 100%;
+  height: 100%;
 }
 .droite {
   height: 100%;
   width: 100%;
+  margin: auto;
   .image {
     max-height: 100%;
     max-width: 100%;
