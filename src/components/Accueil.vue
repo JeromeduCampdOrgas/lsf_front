@@ -19,6 +19,7 @@ export default {
     return {
       users: "",
       store,
+      dogs: "",
     };
   },
   props: {
@@ -31,6 +32,12 @@ export default {
         console.log(this.users);
       });
     },
+  },
+  beforeMount() {
+    configAxios.get(`chiens`).then((response) => {
+      this.dogs = response.data;
+      store.dispatch("getAllDogs", this.dogs);
+    });
   },
 };
 </script>

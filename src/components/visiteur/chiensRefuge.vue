@@ -19,10 +19,7 @@
           </div>
           <div class="card-body">
             <h5 class="card-title">{{ chien.nom }}</h5>
-            <!--<p class="card-text">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>-->
+
             <button
               @click="editChien"
               class="btn btn-warning col-5"
@@ -42,11 +39,14 @@
           class="sidebar-link d-flex flex-direction-row justify-content-around"
           v-for="refuge in this.refuges"
           :key="refuge.id"
+          @click="refugeSelect"
         >
           <div class="sidebar-img">
             <img :src="refuge.imageUrl" :alt="refuge.name" />
           </div>
-          <p>{{ refuge.name }}</p>
+          <div>
+            <p>{{ refuge.name }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -68,8 +68,31 @@ export default {
     };
   },
   methods: {
+    refugeSelect(e) {
+      let page =
+        e.target.parentNode.parentNode.childNodes[1].childNodes[0].innerHTML;
+      store.dispatch("getSelectedRefuge", page);
+      for (let i = 0; i < this.refuges.length; i++) {
+        if (this.refuges[i].name == page) {
+          this.refugeId = this.refuges[i].id;
+          this.refuge = this.refuges[i].name;
+          store.dispatch("getRefugeId", this.refuges[i].id);
+        }
+      }
+      for (let i = 0; i < this.refuges.length; i++) {
+        if (this.refuges[i].name == this.refuge) {
+          this.refugeImg = this.refuges[i].imageUrl;
+        }
+      }
+      configAxios.get(`chiens/${this.refugeId}`).then((response) => {
+        store.dispatch("getChiens", response.data);
+
+        this.chiens = store.state.chiens;
+      });
+
+      this.$router.push("/refuges/" + page);
+    },
     editChien(e) {
-      store.dispatch("getShowModal", false);
       store.dispatch("getChiensCarousel", "");
       let chien = e.target.parentNode.childNodes[0].innerHTML;
       for (let i = 0; i < this.chiens.length; i++) {

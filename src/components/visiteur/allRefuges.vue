@@ -30,7 +30,7 @@ export default {
   methods: {
     selectedRefuge(e) {
       let selectedRefuge = e.target.parentNode.childNodes[0].alt;
-      console.log(selectedRefuge);
+
       store.dispatch("getSelectedRefuge", selectedRefuge);
       for (let i = 0; i < this.refuges.length; i++) {
         if (this.refuges[i].name == selectedRefuge) {

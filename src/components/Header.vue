@@ -91,6 +91,8 @@
               type="search"
               placeholder="Search"
               aria-label="Search"
+              @keyup="searchDog"
+              v-model="q"
             />
             <button class="btn btn-outline-success" type="submit">
               Search
@@ -119,6 +121,7 @@ export default {
   data() {
     return {
       store,
+      q: "",
     };
   },
   components: {
@@ -150,6 +153,9 @@ export default {
           razStore.razUserMail();
         })
         .catch((err) => console.log(err));
+    },
+    searchDog() {
+      console.log("je cherche");
     },
   },
 };
