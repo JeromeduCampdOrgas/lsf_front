@@ -34,6 +34,11 @@
         </span>
       </div>
     </div>
+    <div class="fakeImage" v-if="this.carousel.length == 0">
+      <div class="image">
+        <img src="https://fakeimg.pl/300/" />
+      </div>
+    </div>
   </div>
   <Modal ref="modalName">
     <template v-slot:body> </template>
@@ -93,6 +98,10 @@ export default {
       height: 80%;
     }
   }
+}
+.fakeImage {
+  border: 2px black solid;
+  margin-right: 100px;
 }
 .gauche {
   & h1 {

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Accueil from "../views/Home.vue";
+
 import store from "../store/index";
 function guardMyroute(to, from, next) {
   let isAuthenticated = false;
@@ -152,6 +153,14 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "login" */ "../components/visiteur/editChien.vue"
+      ),
+  },
+  {
+    path: "/resultats",
+    name: "Resultats",
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "../components/visiteur/pageOfDogSearch.vue"
       ),
   },
 ];

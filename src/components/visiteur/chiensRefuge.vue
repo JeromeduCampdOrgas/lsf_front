@@ -86,10 +86,8 @@ export default {
       }
       configAxios.get(`chiens/${this.refugeId}`).then((response) => {
         store.dispatch("getChiens", response.data);
-
         this.chiens = store.state.chiens;
       });
-
       this.$router.push("/refuges/" + page);
     },
     editChien(e) {
@@ -117,14 +115,16 @@ export default {
     },
   },
   beforeMount() {
+    console.log(this.refugeId);
     for (let i = 0; i < this.refuges.length; i++) {
       if (this.refuges[i].name == this.refuge) {
+        console.log(this.refuges[i].name);
         this.refugeImg = this.refuges[i].imageUrl;
       }
     }
     configAxios.get(`chiens/${this.refugeId}`).then((response) => {
+      console.log(response.data);
       store.dispatch("getChiens", response.data);
-
       this.chiens = store.state.chiens;
     });
   },
@@ -148,7 +148,6 @@ export default {
     height: 350px;
     margin: 25px 20px;
     width: 25%;
-
     & .card-img {
       height: 70%;
       object-fit: cover;

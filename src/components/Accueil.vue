@@ -29,7 +29,6 @@ export default {
     afficheUsers() {
       configAxios.get(`users`).then((response) => {
         this.users = response.data;
-        console.log(this.users);
       });
     },
   },

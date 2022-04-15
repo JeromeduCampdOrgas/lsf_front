@@ -73,7 +73,6 @@
                 }}
                 <li>
                   <router-link to="/user/profil">Mon compte</router-link>
-                  <!--<a class="dropdown-item" href="#">Mon compte</a>-->
                 </li>
                 <li>
                   <a class="dropdown-item" href="#" @click="deleteAccount"
@@ -84,18 +83,34 @@
               </ul>
             </div>
 
-            <!----------- FIN PROFIL     -------------------------------->
-
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              @keyup="searchDog"
-              v-model="q"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
+            <!----------- FIN PROFIL     ------------@keyup="searchDog"-------------------->
+            <!--<div class="d-flex flex-direction-column">-->
+            <div id="recherche">
+              <input
+                class="dropdown-toggle"
+                data-toggle="dropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                type="search"
+                placeholder="Rechercher un chien"
+                aria-label="Search"
+                v-model="q"
+                @keyup="searchDog"
+              />
+              <ul class="dropdown-menu" v-show="this.trouves.length > 0">
+                <li
+                  v-for="trouve in this.trouves"
+                  :key="trouve"
+                  class="dropdown-item"
+                  @click="selectDog"
+                >
+                  {{ trouve.nom }}
+                </li>
+              </ul>
+            </div>
+            <!--</div>-->
+            <button class="btn btn-outline-success" @click="dogFound">
+              Recherche
             </button>
           </form>
 
@@ -122,6 +137,8 @@ export default {
     return {
       store,
       q: "",
+      trouves: [],
+      dogsFound: [],
     };
   },
   components: {
@@ -155,10 +172,46 @@ export default {
         .catch((err) => console.log(err));
     },
     searchDog() {
-      console.log("je cherche");
+      if (this.q.length > 0) {
+        let nom = this.q;
+        configAxios
+          .get(`/search/` + nom)
+          .then((response) => {
+            this.trouves = [];
+            for (let i = 0; i < response.data.length; i++) {
+              this.trouves.push(response.data[i]);
+            }
+          })
+          .catch((error) => console.log(error));
+      }
+    },
+
+    selectDog(e) {
+      this.q = "";
+      let selectedDog = e.target.innerHTML;
+      this.q = selectedDog;
+      e.target.parentNode.parentNode.childNodes[0].value = selectedDog;
+    },
+    dogFound() {
+      this.dogsFound = [];
+
+      let nom = this.q;
+      for (let i = 0; i < this.$store.state.allDogs.length; i++) {
+        if (this.$store.state.allDogs[i].nom == nom) {
+          let chien = this.$store.state.allDogs[i];
+
+          this.dogsFound.push(chien);
+        }
+      }
+      store.dispatch("getDogsFound", this.dogsFound);
+      this.$router.push("/resultats");
     },
   },
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+#recherche {
+  position: relative;
+}
+</style>

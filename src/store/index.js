@@ -26,6 +26,7 @@ const state = {
   imagesCarousel: "",
   donnees: "",
   allDogs: "",
+  dogsFound: "",
 };
 
 /********* GETTERS ************************/
@@ -89,6 +90,9 @@ const getters = {
   },
   getAllDogs: () => {
     return state.allDogs;
+  },
+  getDogsFound: () => {
+    return state.dogsFound;
   },
 };
 
@@ -154,6 +158,9 @@ const mutations = {
   SET_ALL_DOGS: (state, chiens) => {
     state.allDogs = chiens;
   },
+  SET_DOGS_FOUND: (state, chiens) => {
+    state.dogsFound = chiens;
+  },
 };
 
 /********* ACTIONS ***********************/
@@ -218,6 +225,9 @@ const actions = {
   },
   getAllDogs: ({ commit }, chiens) => {
     commit("SET_ALL_DOGS", chiens);
+  },
+  getDogsFound: ({ commit }, chiens) => {
+    commit("SET_DOGS_FOUND", chiens);
   },
 };
 
