@@ -20,7 +20,7 @@
         <button @click="editChien" class="btn btn-warning col-5" type="button">
           <span></span> Voir
         </button>
-        <button class="btn btn-danger col-5" type="button">
+        <button @click="deleteChien" class="btn btn-danger col-5" type="button">
           <span></span> Supprimer
         </button>
       </div>
@@ -68,6 +68,25 @@ export default {
         .then((response) => {
           store.dispatch("getChiensCarousel", response.data);
           location.replace("/admin/chiens/edit");
+        });
+    },
+
+    deleteChien(e) {
+      let selectedDog = e.target.parentNode.childNodes[0].innerHTML;
+      for (let i = 0; i < this.chiens.length; i++) {
+        if (this.chiens[i].nom === selectedDog) {
+          this.selectedDog = this.chiens[i];
+        }
+      }
+      configAxios
+        .get(`/chiens/${selectedDog.id}`, {
+          where: {
+            id: selectedDog.id,
+          },
+        })
+        .then(() => {
+          console.log("c'est fait!!!");
+          //location.replace("/admin/chiens/edit");
         });
     },
     /************************************ */
